@@ -1,0 +1,52 @@
+{% extends 'gara/customerbase.html' %}
+{% block content %}
+
+	<!-- main content -->
+	<div class="wrapper">
+
+<!-- ****** table  start ********** -->
+		<div class="row">
+			<div class="col-12 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 style="color:red; text-align:center" >Pending Request & Delete
+						</h3>
+
+					</div>
+					<div class="card-content">
+						<table>
+							<thead>
+                <tr>
+                  <th>Biển số</th>
+                  <th>Hiệu xe</th>
+                  <th>Tên chủ xe</th>
+                  <th>Điện thoại</th>
+                  <th>Địa chỉ</th>
+                  <th>Ngày tiếp nhận</th>
+								  <th>Xóa</th>
+                </tr>
+							</thead>
+							<tbody>
+                {% for enq in enquiries %}
+                <tr>
+                  <td>{{enq.bienso}}</td>
+                  <td>{{enq.hieuxe}}</td>
+                  <td>{{enq.tenchuxe}}</td>
+                  <td>{{enq.dienthoai}}</td>
+                  <td>{{enq.diachi}}</td>
+                  <td>{{enq.date}}</td>
+                  {% comment %} <td><a style="color:blue; text-decoration:none;font-size:25px;"href="{% url 'customer-delete-request' enq.id  %}">&#10008;</a></td> {% endcomment %}
+                </tr>
+                {% endfor %}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- ****** table start ********** -->
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
+	<!-- end main content -->
+{% endblock content %}

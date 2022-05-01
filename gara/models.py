@@ -3,6 +3,14 @@ from django.utils import timezone
 
 from django.contrib.auth.models import User
 
+class KhachHang(models.model)
+    makhachhang = models.AutoField(primary_key=True)
+    tenchuxe = models.CharField(max_length=40,null=False) 
+    diachi = models.CharField(max_length=100,null=False)
+    dienthoai =  models.PositiveIntegerField(null=False)
+    
+    def __str__(self):
+        return self.name
 
 class HieuXe(models.Model):
     name = models.CharField(max_length=40,null=False)    
@@ -18,6 +26,16 @@ class PhieuTiepNhan(models.Model):
     dienthoai =  models.PositiveIntegerField(null=False)
     date=models.DateField(auto_now=True)
 
+    # def save(self, *args, **kwargs):
+            
+    #         if PhieuTiepNhan.objects.filter(date).exists():
+    #             print('Video with field_boolean=True exists')
+    #         else:
+    #             super(Video, self).save(*args, **kwargs)
+
+
+    def __str__(self):
+        return f"Tên chủ xe: {self.tenchuxe}, Biển số: {self.bienso}"
 
 #class ThamSo(models.Model):
 

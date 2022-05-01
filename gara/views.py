@@ -1,16 +1,25 @@
 from django.shortcuts import render
 from . import forms
-
+from .models import *
+from datetime import date
 # Create your views here.
+
 def tiep_nhan(request):
-    form=forms.TiepNhanForm()
-    
-    mydict={'forms':form}
+    enquiry=forms.TiepNhanForm()
+    count = PhieuTiepNhan.objects.filter(date=date.today()).count()
+    if count > 30: ##Cần sửa với tham số
+        enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
+
+        return render(request, 'gara/view_request.html', {'enquiries': enquiries})
 
     if request.method=='POST':
-        userForm=forms.DoctorUserForm(request.POST)
-        doctorForm=forms.DoctorForm(request.POST, request.FILES)
-        if forms.is_valid():
-            print('save')
-        return render(request,'hospital/admin_add_doctor.html',context=mydict)
-    return render(request,'gara/add_request.html',{'enquiry':form})
+        enquiry=forms.TiepNhanForm(request.POST)
+        if enquiry.is_valid():
+            enquiry_x=enquiry.save()
+        return render(request, 'gara/view_request.html', {'enquiries': enquiries})
+    
+    return render(request,'gara/add_request.html',{'enquiry':enquiry})
+
+def view_request(request):
+    enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
+    return render(request,'gara/view_request.html', {'enquiries': enquiries})
