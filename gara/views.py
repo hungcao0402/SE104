@@ -2,8 +2,9 @@ from django.shortcuts import render
 from . import forms
 from .models import *
 from datetime import date
-# Create your views here.
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/view-request')
 def tiep_nhan(request):
     enquiry=forms.TiepNhanForm()
     count = PhieuTiepNhan.objects.filter(date=date.today()).count()
@@ -23,3 +24,8 @@ def tiep_nhan(request):
 def view_request(request):
     enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
     return render(request,'gara/view_request.html', {'enquiries': enquiries})
+
+# def bao_cao_ton(request):
+#     tondau=
+#     phatsinh=
+#     toncuoi=    
