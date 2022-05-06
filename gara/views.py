@@ -14,7 +14,7 @@ def tiep_nhan(request):
         return render(request, 'gara/view_request.html', {'enquiries': enquiries})
 
     if request.method=='POST':
-        enquiry=forms.TiepNhanForm(request.POST)
+        enqouiry=forms.TiepNhanForm(request.POST)
         if enquiry.is_valid():
             enquiry_x=enquiry.save()
         return render(request, 'gara/view_request.html', {'enquiries': enquiries})
@@ -25,7 +25,13 @@ def view_request(request):
     enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
     return render(request,'gara/view_request.html', {'enquiries': enquiries})
 
-# def bao_cao_ton(request):
-#     tondau=
-#     phatsinh=
+def tao_bao_cao_ton(request):
+    p = baocaoton()
+    for i in vattuphutung.objects.all():
+        # thangtruoc = 
+        # tondau=baocaoton.objects.filter(thangtruoc)
+
+        c = ct_baocaoton
+#     
+    #  phatsinh = nhapvattuphutung().objects
 #     toncuoi=    

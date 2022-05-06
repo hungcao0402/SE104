@@ -5,8 +5,15 @@ from django.contrib.auth.models import User
 
 #class ThamSo(models.Model):
 
+# class phieusuachua(models.Model):
+
+class nhapvattuphutung(models.Model):
+    mavattuphutrung = models.ForeignKey(vattuphutung)
+    soluong = models.PositiveIntegerField(null=False)
+    thoidiem = models.DateField(auto_now=True)
+
 class vattuphutung(models.Model):
-    mavattuphutrung = models.AutoField(primary_key=True)
+    mavattuphutung = models.AutoField(primary_key=True)
     ten = models.CharField(max_length=40,null=False) 
     soluong = models.PositiveIntegerField(null=False)
     dongia = models.PositiveIntegerField(null=False)
@@ -48,8 +55,12 @@ class PhieuTiepNhan(models.Model):
 
 
 class baocaoton(models.Model):
-    MaPhuTung = models.ForeignKey(vattuphutung, on_delete=models.DO_NOTHING)
+    thoidiem = models.DateField(auto_now=True)
+
+class ct_baocaoton(models.Model):
+    MaBCT = models.ForeignKey(baocaoton, on_delete=models.CASCADE)
+    MaVTPT = models.ForeignKey(vattuphutung, on_delete=models.CASCADE)
     TonDau =  models.PositiveIntegerField(null=False)
     PhatSinh =  models.PositiveIntegerField(null=False)
-    TonCuoi=  models.PositiveIntegerField(null=False)
-    thang = models.DateField()
+    TonCuoi = models.PositiveIntegerField(null=False)
+    MaPhuTung = models.ForeignKey(vattuphutung, on_delete=models.DO_NOTHING)
