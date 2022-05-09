@@ -7,10 +7,10 @@ from django.contrib.auth.models import User
 
 # class phieusuachua(models.Model):
 
-class nhapvattuphutung(models.Model):
-    mavattuphutrung = models.ForeignKey(vattuphutung)
-    soluong = models.PositiveIntegerField(null=False)
-    thoidiem = models.DateField(auto_now=True)
+# class nhapvattuphutung(models.Model):
+#     mavattuphutrung = models.ForeignKey(vattuphutung)
+#     soluong = models.PositiveIntegerField(null=False)
+#     thoidiem = models.DateField(auto_now=True)
 
 class vattuphutung(models.Model):
     mavattuphutung = models.AutoField(primary_key=True)
@@ -57,10 +57,17 @@ class PhieuTiepNhan(models.Model):
 class baocaoton(models.Model):
     thoidiem = models.DateField(auto_now=True)
 
-class ct_baocaoton(models.Model):
-    MaBCT = models.ForeignKey(baocaoton, on_delete=models.CASCADE)
-    MaVTPT = models.ForeignKey(vattuphutung, on_delete=models.CASCADE)
-    TonDau =  models.PositiveIntegerField(null=False)
-    PhatSinh =  models.PositiveIntegerField(null=False)
-    TonCuoi = models.PositiveIntegerField(null=False)
-    MaPhuTung = models.ForeignKey(vattuphutung, on_delete=models.DO_NOTHING)
+# class ct_baocaoton(models.Model):
+#     MaBCT = models.ForeignKey(baocaoton, on_delete=models.CASCADE)
+#     MaVTPT = models.ForeignKey(vattuphutung, on_delete=models.CASCADE)
+#     TonDau =  models.PositiveIntegerField(null=False)
+#     PhatSinh =  models.PositiveIntegerField(null=False)
+#     TonCuoi = models.PositiveIntegerField(null=False)
+#     MaPhuTung = models.ForeignKey(vattuphutung, on_delete=models.DO_NOTHING)
+
+class THAMSO(models.Model):
+    TenThamSo = models.TextField(primary_key=True)
+    GiaTri = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.TenThamSo
