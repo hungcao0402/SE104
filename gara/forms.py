@@ -36,7 +36,7 @@ class RegisterForm(forms.ModelForm):
     profile_pic = forms.ImageField()
     class Meta:
         model= Customer
-        fields=['username','firstname','lastname','emails','password','mobile', 'address']
+        fields=['username','firstname','lastname','emails','password','mobile', 'address','profile_pic']
         widgets = {
             'password': forms.PasswordInput()
         }

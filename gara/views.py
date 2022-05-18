@@ -38,10 +38,10 @@ def home(request):
     return render(request, 'gara/home.html',{})
 
 def sign_up(request):
-    form = RegisterForm(request.POST or None)
-    context = {'userForm': form}
+    form = RegisterForm()
     if request.method == "POST":
         form = RegisterForm(request.POST, request.FILES)
+        print(form.errors)
         if form.is_valid():
             print(form.cleaned_data)
             username = request.POST['username']
@@ -53,7 +53,6 @@ def sign_up(request):
             emails = request.POST['emails']
             profile_pic = request.FILES['profile_pic']
             address = request.POST['address']
-            # list = [form.cleaned_data['username'], form.cleaned_data['password']]
             Customer.objects.create(username=username, password=password, lastname=lastname,
                                     firstname=firstname, mobile=mobile, emails=emails, 
                                     address=address , profile_pic=profile_pic)
@@ -61,8 +60,10 @@ def sign_up(request):
                                 first_name=firstname, last_name=lastname, email=emails)
             my_customer_group = Group.objects.get_or_create(name='CUSTOMER')
             my_customer_group[0].user_set.add(user)
-            # form.save(commit=False)
-            # return reversed('customer-profile', kwargs={'username': username})
+            return redirect('login-customer/')
+        else:
+            messages.warning(request,'Invalid form, please filling a again!')
+    context = {'userForm': form}
     return render(request, 'gara/customersignup.html', context)
 @login_required(login_url='/login-customer')
 def profile(request, username):
@@ -86,9 +87,9 @@ def customer_login_view(request):
             return redirect(f'../customer-profile/{username}')
         else:
             messages.warning(request, 'Login failed! Please fill your account again.')
-        
     context = {'form': form}
     return render(request, 'gara/customerlogin.html', context)
+
 @login_required(login_url='/login-customer')
 def customer_dashboard_view(request, username):
     cus = Customer.objects.get(username=username)
@@ -127,7 +128,8 @@ def edit_customer_account_view(request, username):
             user.set_password(request.POST['password'])
             user.save()
             customer = CustomerUpdate_Account.save()
+            customer.password = request.POST['password']
             customer.save()
-            return redirect(f'../login-customer')
+            return redirect('../login-customer')
     mydict = {'userForm':CustomerUpdate_Account, 'picture':picture}
     return render(request,'gara/edit_customer_account.html', mydict)
