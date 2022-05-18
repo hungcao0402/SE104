@@ -1,0 +1,55 @@
+{% extends 'gara/customerbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<head>
+  <style media="screen">
+    input[type=text], select,input[type=number] ,input[type=password], textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+
+  </style>
+
+
+</head>
+
+<br><br><br><br><br>
+<h1 style="text-align:center;color:blue;">Edit Your Profile</h1>
+<div>
+  <form method="post"  enctype="multipart/form-data" style="margin-left:200px;margin-right:200px;">
+      {% csrf_token %}
+        <label for="username">Username</label>
+          {% render_field userForm.username class="form-control" placeholder="Username"%}
+        <label for="password">Password</label>
+          {% render_field userForm.password class="form-control" placeholder="Password" type="password"%}
+
+          <!-- {{customerForm.as_table}} -->
+    <input type="submit" value="Edit Your Profile">
+  </form>
+</div>
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock content %}

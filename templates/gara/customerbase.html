@@ -5,15 +5,15 @@
 
 
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-	<link rel="icon" type="image/png" href="{% static "assets/AT-pro-logo.png" %}"/>
+	<link rel="icon" type="image/png" href="{% static 'assets/AT-pro-logo.png' %}"/>
 
 	<!-- Import lib -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
-	<link rel="stylesheet" type="text/css" href="{% static "fontawesome-free/css/all.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'fontawesomefree/css/all.min.css' %}">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 	<!-- End import lib -->
 
-	<link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body class="overlay-scrollbar">
 	<!-- navbar -->
@@ -26,7 +26,7 @@
 				</a>
 			</li>
 			<li class="nav-item">
-			<a style="text-decoration:none;"href="/customer-dashboard"><h3>Vehicle Service Management</h3></a>
+			<a style="color:green";href="/customer-dashboard"><h3>Car Service Management</h3></a>
 			</li>
 		</ul>
 		<!-- end nav left -->
@@ -39,7 +39,7 @@
 		<!-- nav right -->
 		<ul class="navbar-nav nav-right">
 			<li class="nav-item mode">
-				<a class="nav-link" href="#" onclick="switchTheme()">
+				<a class="nav-link" onclick="switchTheme()">
 					<i class="fas fa-moon dark-icon"></i>
 					<i class="fas fa-sun light-icon"></i>
 				</a>
@@ -47,11 +47,10 @@
 
 			<li class="nav-item avt-wrapper">
 				<div class="avt dropdown">
-					<img src="{% static  customer.profile_pic.url %} " alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+					<img src="{{ picture }} " alt="User image" class="dropdown-toggle" data-toggle="user-menu">
 					<ul id="user-menu" class="dropdown-menu">
-
 						<li  class="dropdown-menu-item">
-							<a href="/customer-profile" class="dropdown-menu-link">
+							<a href="/customer-profile/{{username}}" class="dropdown-menu-link">
 								<div>
 									<i class="fas fa-user-tie"></i>
 								</div>
@@ -60,11 +59,18 @@
 						</li>
 
 						<li  class="dropdown-menu-item">
-							<a href="/logout" class="dropdown-menu-link">
+							<a href="/logout-customer" class="dropdown-menu-link">
 								<div>
 									<i class="fas fa-sign-out-alt"></i>
 								</div>
 								<span>Logout</span>
+						<li  class="dropdown-menu-item">
+							<a href="/login-customer" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-sign-out-alt"></i>
+								</div>
+								<span>Login</span>
+
 							</a>
 						</li>
 					</ul>
@@ -84,7 +90,7 @@
 		<ul class="sidebar-nav">
 
 			<li class="sidebar-nav-item">
-				<a href="/customer-dashboard" class="sidebar-nav-link">
+				<a href="/customer-dashboard/{{username}}" class="sidebar-nav-link">
 					<div>
 						<i class="fas fa-tachometer-alt"></i>
 					</div>
@@ -144,10 +150,9 @@
 
 
 
-
 	<!-- import script -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-	<script src="{% static "index.js" %}"></script>
+	<script src="{% static 'index.js' %}"></script>
 	<!-- end import script -->
 </body>
 </html>

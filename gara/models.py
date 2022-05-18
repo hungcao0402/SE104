@@ -35,12 +35,12 @@ class PhieuTiepNhan(models.Model):
     dienthoai =  models.PositiveIntegerField(null=False)
     date=models.DateField(auto_now=True)
 
-    # def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
             
-    #         if PhieuTiepNhan.objects.filter(date).exists():
-    #             print('Video with field_boolean=True exists')
-    #         else:
-    #             super(Video, self).save(*args, **kwargs)
+            if PhieuTiepNhan.objects.filter(date).exists():
+                print('Video with field_boolean=True exists')
+            else:
+                super(Video, self).save(*args, **kwargs)
 
 
     def __str__(self):
@@ -53,3 +53,25 @@ class baocaoton(models.Model):
     PhatSinh =  models.PositiveIntegerField(null=False)
     TonCuoi=  models.PositiveIntegerField(null=False)
     thang = models.DateField()
+
+# class TaiKhoan(models.Model):
+#     TenTaiKhoan = models.CharField(max_length=1)
+#     MatKhau = models.CharField(max_length=25)
+class Customer(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE, null=True, blank=True, related_name='profile')
+    username = models.CharField(max_length=15, default='AnonymousUser', unique=True)
+    firstname = models.CharField(max_length=15, default='Anonymous')
+    lastname = models.CharField(max_length=10, default='User')
+    password = models.CharField(max_length=20,default='')
+    profile_pic= models.ImageField(upload_to='static/profile_pic/CustomerProfilePic/',null=True,blank=True)
+    address = models.CharField(max_length=40)
+    mobile = models.CharField(max_length=10)
+    emails = models.EmailField(max_length=90, default='anonymous@gmail.com', null=True)
+    @property
+    def get_name(self):
+        return self.firstname+" "+self.lastname
+    @property
+    def get_instance(self):
+        return self
+    def __str__(self):
+        return self.username
