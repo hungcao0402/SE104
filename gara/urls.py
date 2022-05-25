@@ -4,6 +4,7 @@ from . import views
 app_name='gara'
 
 urlpatterns = [
-    path('add-request', views.tiep_nhan,name='add-request'),
-    path('view-request',views.view_request,name='view-request'),
+    path('',views.tao_form,name='view-request'),
+    path('dien_phieuthu/<int:maxe>',views.xacnhan_phieuthu,name='view-view'),
+    path('view_phieuthu/<int:maphieuthutien>',views.view_phieuthu,name='view-view')
 ]
