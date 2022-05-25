@@ -5,14 +5,14 @@ from .models import *
 from datetime import date
 # from django.contrib.auth.decorators import login_required
 
-def tao_form(request):
+def nhapbienso_phieuthu(request):
     enquiry=forms.NhapBienSoThu
     if request.method=='POST':
         enquiry=forms.NhapBienSoThu(request.POST)
         print(request.POST['bienso'])
         xe_x=Xe.objects.get(bienso=request.POST['bienso']) 
         return redirect(f'dien_phieuthu/{xe_x.maxe}')
-    return render(request,'gara/nhapbienso_phieuthu.html', {'enquiry':enquiry})
+    return render(request,'phieu thu tien/nhapbienso_phieuthu.html', {'enquiry':enquiry})
 
 def xacnhan_phieuthu(request,maxe):
     nhapsotienthu=forms.NhapSoTienThu
@@ -25,7 +25,7 @@ def xacnhan_phieuthu(request,maxe):
             tienthu=nhapsotienthu.cleaned_data['sotienthu']
             if tienthu<xe_x.tienno:
                 print('chua hoan thanh')
-                return render(request,'gara/nhapsotienthu.html',context)   
+                return render(request,'phieu thu tien/nhapsotienthu.html',context)   
             else: 
                 phieuthutien_x=PhieuThuTien
                 print('helllllooo',phieuthutien_x.maxe)
@@ -34,9 +34,18 @@ def xacnhan_phieuthu(request,maxe):
                 xe_x.tienno=0
                 xe_x.save()
                 print('da luu vao database')
-    return render(request,'gara/nhapsotienthu.html',context)       
+    return render(request,'phieu thu tien/nhapsotienthu.html',context)       
 def view_phieuthu(request,maphieuthutien):
     phieuthu=PhieuThuTien.objects.get(maphieuthutien=maphieuthutien)
     xe_x=Xe.objects.get(maxe=phieuthu.maxe)
     context={'xe_x':xe_x,'phieuthu':phieuthu}
-    return render(request,'gara/view_phieuthu.html',context)           
+    return render(request,'phieu thu tien/view_phieuthu.html',context)       
+
+def tao_form(request):
+    enquiry=forms.NhapBienSoThu
+    if request.method=='POST':
+        enquiry=forms.NhapBienSoThu(request.POST)
+        print(request.POST['bienso'])
+        xe_x=Xe.objects.get(bienso=request.POST['bienso']) 
+        return redirect(f'dien_phieuthu/{xe_x.maxe}')
+    return render(request,'phieu thu tien/nhapbienso_phieuthu.html', {'enquiry':enquiry})    
