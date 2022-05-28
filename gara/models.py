@@ -19,7 +19,7 @@ class HieuXe(models.Model):
         return self.tenhieuxe
 class Xe(models.Model): 
     maxe=models.AutoField(primary_key=True)
-    bienso=models.CharField(max_length=20)
+    bienso=models.CharField(max_length=20,unique=True)
     makhachhang=models.ForeignKey(KhachHang,on_delete=models.CASCADE)
     mahieuxe=models.ForeignKey(HieuXe,on_delete=models.CASCADE)
     ngaytiepnhan=models.DateField(auto_now_add=True)
@@ -35,17 +35,22 @@ class PhieuSuaChua(models.Model):
     maphieusuachua=models.AutoField(primary_key=True)
     maxe=models.ForeignKey(Xe,on_delete=models.CASCADE)
     tongthanhtien=models.IntegerField(default=0)
-    ngaylapphieu=models.DateField(auto_now_add=True)
+    ngaylapphieu=models.DateField(auto_now_add=True)   
+    def __str__(self):
+        return f"{self.maphieusuachua}"
 class TienCong(models.Model):
     matiencong=models.AutoField(primary_key=True)
-    loaitiencong=models.CharField #check lai
+    loaitiencong=models.CharField(max_length=50, unique=True) 
     tiencong=models.IntegerField(default=0)
+    def __str__(self):
+        return self.loaitiencong
 class CT_PhieuSuaChua(models.Model):
     mact_phieusuachua=models.AutoField(primary_key=True)
     maphieusuachua=models.ForeignKey(PhieuSuaChua,on_delete=models.CASCADE)
     solan=models.IntegerField()
     matiencong=models.ForeignKey(TienCong,on_delete=models.CASCADE)
     tiencong=models.IntegerField()
+    tongtienvattu=models.IntegerField(default=0)
     noidung=models.CharField(max_length=100)
     tongtien=models.IntegerField(default=0)
 class VatTuPhuTung(models.Model):
@@ -54,6 +59,9 @@ class VatTuPhuTung(models.Model):
     loaivattuphutung=models.CharField(max_length=50)
     dongia=models.IntegerField()
     soluong=models.IntegerField()
+    def __str__(self):
+        return self.tenvattuphutung
+
 class CT_VatTuPhuTung(models.Model):
     mact_vattuphutung=models.AutoField(primary_key=True)
     mavattuphutung=models.ForeignKey(VatTuPhuTung,on_delete=models.CASCADE)

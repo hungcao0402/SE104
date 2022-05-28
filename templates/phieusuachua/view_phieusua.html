@@ -1,0 +1,104 @@
+{% extends 'gara/customerbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<head>
+  <style media="screen">
+    input[type=text], select,input[type=number] , textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+
+  </style>
+
+
+</head>
+
+
+
+<br><br><br><br><br>
+<h1 style="text-align:center;">THÔNG TIN PHIẾU SỮA CHỮA</h1>
+
+
+
+<div>
+   <form  style="margin-left:200px;margin-right:200px;">
+       <label for="vehicle_no">Biển số: </label>
+    {%render_field xe_x.bienso%}
+    <p></p>
+    <label for="vehicle_no">Mã phiếu sữa chữa: </label>
+    {%render_field phieusua.maphieusuachua%}
+    <p></p>
+    <label for="vehicle_no">Tổng thành tiền: </label>
+    {%render_field phieusua.tongthanhtien%}
+    <p></p>
+    <label for="vehicle_no">Ngày lập phiếu sữa chữa: </label>
+    {%render_field phieusua.ngaylapphieu%}
+
+    <p>-----------------------------------------------</p>
+   </form>
+  <form method="post" style="margin-left:200px;margin-right:200px;">
+      {% csrf_token %}
+      <label for="vehicle_no">Loại tiền công: </label>
+      {%render_field enquiry.loaitiencong%}
+      <label for="vehicle_no">Nhập số lần: </label>
+      {%render_field enquiry.solan%}
+      <!-- <label for="vehicle_no">Tiền công: </label>
+      {%render_field enquiry.tiencong%} -->
+      <label for="vehicle_no">Nội dung: </label>
+      {%render_field enquiry.noidung%}
+    {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
+    {% comment %} {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
+    <input type="submit" value="Submit">
+    <table style="margin: top 100px;">
+        <tr>
+            <th>Mã ID</th>
+            <th>Số lần</th>
+            <th>MÃ tiền công</th>
+            <th>Tiền công</th>
+            <th>Nội dung</th>
+            <th>Tổng tiền</th>
+            <th>Tổng tiền vật tư</th>
+          </tr>
+          {% for i in data %}
+            <tr>
+          <th> <br>{{ i.mact_phieusuachua }} </br>  </th>
+          <th> <br>{{ i.solan }} </br>  </th>
+          <th><br> {{ i.matiencong }} </br></th>
+          <th><br> {{ i.tiencong }} </br></th>
+          <th><br> {{ i.noidung }} </br></th>
+          <th><br> {{ i.tongtien }} </br></th>
+          <th><br> {{ i.tongtienvattu }} </br></th>
+          <th><br> 
+            <a <button> <a href=" {% url 'gara:view_ctphieusuachua' i.mact_phieusuachua  %}">Click click</a></button>
+          </br></th>
+     </tr> {%endfor%}
+    </table>
+
+  </form>
+</div>
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock content %}
