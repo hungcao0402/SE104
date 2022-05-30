@@ -11,13 +11,16 @@ def tiep_nhan(request):
     if count > 30: ##Cần sửa với tham số
         enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
 
-        return render(request, 'gara/view_request.html', {'enquiries': enquiries})
+        return HttpResponse("Đã quá số lượng tiếp nhận trong ngày")
 
     if request.method=='POST':
         enquiry=forms.TiepNhanForm(request.POST)
         if enquiry.is_valid():
             enquiry_x=enquiry.save()
-            kh = KhachHang.objects.all().filter(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai)[0]
+            try:
+                kh = KhachHang.objects.all().filter(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai)[0]
+            except:
+                kh = False
             if not kh:
                 kh = KhachHang(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai, diachi=enquiry_x.diachi)
                 kh.save()

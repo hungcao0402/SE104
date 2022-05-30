@@ -8,6 +8,4 @@ admin.site.register(VatTuPhuTung)
 admin.site.register(KhachHang)
 admin.site.register(HieuXe)
 admin.site.register(Xe)
-
-
-
+admin.site.register(PhieuTiepNhan)
