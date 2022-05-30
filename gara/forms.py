@@ -75,4 +75,38 @@ class NhapCTSuaChua(forms.Form):
 class NhapCT_VatTuPhuTung(forms.Form):
     tenvattuphutung=forms.ModelChoiceField(queryset=VatTuPhuTung.objects.all())   #.values_list('tenvattuphutung',flat=True))
     soluong=forms.IntegerField()
-    dongia=forms.IntegerField()
+
+# Phan cua Cao Van Hung
+
+
+class TiepNhanForm(forms.ModelForm):
+    class Meta:
+        model=PhieuTiepNhan
+        fields=['tenchuxe','bienso','hieuxe','dienthoai','diachi']
+
+class AskDateForm(forms.Form):
+    date=forms.DateField(widget=forms.SelectDateWidget())
+
+# Phan cua Nguyen Tri
+
+class CapNhatQuyDinh(forms.ModelForm):
+    class Meta:
+        # def __init__(self):
+        #     print("in init")
+        model = QuyDinhHienHanh
+        fields = ['MaThamSo','TenThamSo','GiaTri']
+        widgets = {
+            'GiaTri': forms.TextInput(attrs={'class':'form_GiaTri'}),
+            'TenThamSo': forms.TextInput(attrs={'class':'form_TenThamSo'})
+        }
+
+class NhapCTVatTuPhuTung(forms.ModelForm):
+    class Meta:
+        model = VatTuPhuTung
+        fields = ['tenvattuphutung','soluong','dongia']
+     
+class ThemHieuXe(forms.Form):
+        tenhieuxe = forms.CharField(max_length=50)
+class ThemTienCong(forms.Form):
+    loaitiencong = forms.CharField(max_length=100)
+    tiencong = forms.IntegerField(min_value=0)

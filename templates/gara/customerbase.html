@@ -55,6 +55,28 @@
     font-size: 1.25rem;
   }
 }
+.success {
+            color:#fafafa;
+            font-size: 20px;
+            border-style: double;
+            background-color: #311ae0;
+            height:60px;
+            width: 320px;
+            text-align: center;
+			margin-top: -200px;
+			margin-right: -200px;
+        }
+        .warning {
+            color:#fafafa;
+            font-size: 20px;
+            border-style: double;
+            background-color: #ff0000;
+            height:60px;
+            width: 320px;
+            text-align: center;
+			margin-top: 10px;
+			margin-right: 300px;
+        }
 	</style>
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 	<link rel="icon" type="image/png" href="{% static 'assets/AT-pro-logo.png' %}"/>
@@ -81,14 +103,7 @@
 			<a style="color:green";href="/customer-dashboard"><h3>Phần mềm quản lý Garage Ôtô</h3></a>
 			</li>
 		</ul>
-		<!-- end nav left -->
-		<!-- form -->
-		<form class="navbar-search">
-			<input type="text" name="Search" class="navbar-search-input" placeholder="What you looking for...">
-			<i class="fas fa-search"></i>
-		</form>
-		<!-- end form -->
-		<!-- nav right -->
+
 		<ul class="navbar-nav nav-right">
 			<li class="nav-item mode">
 				<a class="nav-link" onclick="switchTheme()">
@@ -153,7 +168,7 @@
 			</li>
 
 			<li  class="sidebar-nav-item">
-				<a href="/add_request" class="sidebar-nav-link">
+				<a href="/{{customer.username}}/request" class="sidebar-nav-link">
 					<div>
 						<i class="fas fa-spinner"></i>
 					</div>
@@ -205,6 +220,12 @@
 	<!-- import script -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 	<script src="{% static 'index.js' %}"></script>
+	<script>
+		var message_ele = document.getElementById("message_container");
+	setTimeout(function(){ 
+	   message_ele.style.display = "none"; 
+	}, 1000);
+	</script>
 	<!-- end import script -->
 </body>
 </html>

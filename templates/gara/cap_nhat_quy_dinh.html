@@ -1,0 +1,154 @@
+{% extends 'gara/customerbase.html' %}
+{% block content %}
+
+<head>
+
+    <style>
+         .form_container{
+            max-width: 720px;
+            height: 200px;
+            padding: 15px;
+            margin: 15px auto 0 auto;  
+            /* display: flex;  */
+            justify-content: center;
+            /* background-color: antiquewhite; */
+        }
+
+        .form_update{
+            padding: 15px ;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .sub_element{
+            margin-top: 20px;
+            width: 400px;
+            /* background-color: aqua; */
+            display: inline-flex;
+        }
+
+        .form_label{
+            min-width: 100px;
+            /* background-color: rgb(37, 80, 118); */
+        }
+
+        .form_GiaTri{
+            flex: 1;
+            height: 30px;
+        }
+        .form_TenThamSo{
+            flex: 1;
+            height: 30px;
+        }
+        .form_submit{
+            background-color: #148043;
+            height: 30px;
+            max-width: 200px;
+            color: white;
+            cursor: pointer;
+            border: none;
+            margin-top: 30px;
+        }
+
+        .card-content{
+            margin-right: 100px;
+            margin-left: 100px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .submit-row{
+            text-decoration: none;
+            display: block;
+            width: 90px;
+            min-height: 30px;
+			text-align: center;
+            padding: 5px;
+            color: white;
+            border-radius: 5px;
+        }
+        .update-row{
+            background-color: #19b15b;
+        } 
+        .update-row:hover{
+            background-color: rgb(52, 225, 167);
+        }
+        .delete-row{
+            background-color: rgb(241, 68, 68);
+        }
+
+        /* ========= table=========== */
+        table {
+            border-collapse: collapse;
+            width: 75%;
+        }
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:nth-child(even) {background-color: #a5e2fd;}
+    </style>
+    
+</head>
+
+
+<body>
+    <br><br><br><br><br>
+<h1 style="text-align:center;">CẬP NHẬT QUY ĐỊNH</h1>
+
+<!-- ================ FORM CAP NHAT QUY DINH=================== -->
+<!-- <div class="form_container" >
+    <form action="/save"  class="form_update" method="post">
+        {% csrf_token %}
+        <div class="sub_element">
+            <label class="form_label">Tên tham số: </label>{{ fa.TenThamSo }}
+        </div>
+
+        <div class="sub_element">
+            <label class="form_label">Giá trị: </label>{{ fa.GiaTri }}
+        </div>
+        <input type="submit" class="form_submit" value="Cập nhật quy định">
+    </form> 
+</div> -->
+
+
+
+<!-- Xuat gia tri ra table -->
+<div class="card-content">
+    <table>
+        <thead>
+            <tr>
+                <th>Mã Tham số</th>
+                <th>Tên tham số</th>
+                <th>Giá trị</th>
+                <th>Cập nhật</th>
+                <!-- <th>Xóa</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+            <tr>
+                <td> {{ i.MaThamSo }}</td>
+                <td> {{ i.TenThamSo }}</td>
+                <td> {{ i.GiaTri }}</td>
+                <td><a href="update_quydinh/{{i.MaThamSo}}" class="update-row submit-row">Cập nhật</a></td>
+                <!-- <td><a href="delete_quydinh/{{i.MaThamSo}}" class = "delete-row submit-row">Xóa</a></td> -->
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+<!-- Xuat gia tri ra table -->
+
+</body>
+
+{% endblock content %}

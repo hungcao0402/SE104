@@ -1,0 +1,95 @@
+{% extends 'gara/customerbase.html' %}
+{% block content %}
+<head>
+	<style>
+		.card_update{
+			/* background-color: aqua; */
+			display: flex;
+			padding: 12px;
+			justify-content: center;
+		}
+
+		.form_update{
+			background-color: rgb(104, 195, 234);
+			min-height: auto;
+			margin: 200px;
+			border-radius: 10px;
+
+		}
+
+		.form_row{
+			/* background-color: aquamarine; */
+			/* padding: 20px; */
+			margin: 20px;
+			min-width: 400px;
+			display: flex;
+		}
+
+		.form_label{
+			min-width: 100px;
+		}
+
+		.form_TenThamSo{
+			flex: 1;
+		}
+
+		.form_GiaTri{
+			flex: 1;
+		}
+
+		.submit{
+			/* width: 200px; */
+			margin: 20px;
+			display: flex;
+			padding: 12px 20px;
+			justify-content: space-around;
+			/* background-color: bisque; */
+		}
+
+		.submit_update{
+			background-color: green;
+			width: 90px;
+			height: 30px;
+			border: none;
+			color: white;
+			cursor:pointer;
+		}
+
+		.cancel{
+			background-color: rgb(240, 88, 88);
+			width: 90px;
+			height: 30px;
+			border: none;
+			text-align: center;
+			padding: 5px;
+			color: white;
+			cursor:pointer;
+			text-decoration: none
+		}
+	</style>
+</head>
+
+<body>
+	<div class="card_update">
+		<form action="" method="POST" class="form_update">
+			{% csrf_token %}
+
+			<div class="form_row">
+				<label for="" class="form_label">Tên Tham Số:</label>
+				{{form.TenThamSo}}
+				<br>
+			</div>
+			<div class="form_row">
+				<label for="" class="form_label">Giá Trị:</label>
+				{{form.GiaTri}}
+				<br>	
+			</div>
+			<div class="submit">
+				<input type="submit" value="Update" class="submit_update">
+				<a class="cancel" href="/">Cancel</a>
+			</div>
+		</form>
+	</div>
+</body>
+
+{% endblock content %}

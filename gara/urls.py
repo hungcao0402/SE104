@@ -26,5 +26,19 @@ urlpatterns = [
     path('<username>/view_phieusua/<int:maphieusuachua>',views.view_phieusua,name='view-phieusua'),
     path('<username>/view_ctphieusua/<int:mact_phieusuachua>',views.view_ctphieusuachua,name='view_ctphieusuachua'),
     path('<username>/delete_ctphieusua/<int:mact_phieusuachua>',views.delete_ctphieusua,name='delete_ctphieusua'),
-    path('<username>/delete_chitietvattu/<int:mact_vattuphutung>/<int:mact_phieusuachua>/<int:maphieusuachua>',views.delete_chitietvattu,name='delete_chitietvattu')
+    path('<username>/delete_chitietvattu/<int:mact_vattuphutung>/<int:mact_phieusuachua>/<int:maphieusuachua>',views.delete_chitietvattu,name='delete_chitietvattu'),
+    path('<username>/add_request', views.tiep_nhan,name='add-request'),
+    path('<username>/request',views.view_request,name='view-request'),
+    path('<username>/view_baocaoton', views.view_baocaoton),
+    path('<username>/baocaoton', views.baocaoton_luachon),
+    path('<username>/save_baocaoton',views.save_baocaoton),
+    #Tri Nghe An ze zach
+    path('<username>/baocaodoanhso', views.Bao_Cao_Doanh_So),
+    path('<username>/post_bsds',views.search_bcds, name="post_bsds"),
+    path('<username>/thamso', views.regular_update, name="index"),
+    path('<username>/save/',views.save_regular_update, name="save"),
+    path('<username>/update_quydinh/<mts>', views.update_quydinh, name='update_quydinh'),
+    path('<username>/nhap_vtpt', views.nhap_vtpt, name='nhap_vtpt'),
+    path('<username>/nhap_hieuxe', views.them_hieuxe, name="nhap-hieu-xe"),
+    path('<username>/nhap_tiencong', views.them_tiencong, name="them-hieu-xe")
 ]

@@ -14,9 +14,9 @@
   }
 
   input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
+    width: 20%;
+    background-color: #4cafaa;
+    color: rgb(41, 0, 0);
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
@@ -25,9 +25,13 @@
   }
 
   input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: #033d53;
+    padding: 14px 20px;
   }
-
+  .button2 {background-color: #008CBA;
+    padding: 14px 20px;
+  } /* Blue */
+  
 
   </style>
 
@@ -36,25 +40,16 @@
 
 
 
+
+
 <br><br><br><br><br>
-<h1 style="text-align:center;">TẠO PHIẾU TIẾP NHẬN</h1>
+<h1 style="text-align:center;">NHẬP TÊN HIỆU XE</h1>
+
 <div>
   <form method="post" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
-    <label for="category">Tên chủ xe</label>
-    {% render_field enquiry.tenchuxe class="form-control"  %}<br>
-
-    <label for="vehicle_no">Biển số</label>
-    {% render_field enquiry.bienso class="form-control" placeholder="Biển số" %}
-
-    <label for="vehicle_name">Hiệu xe</label>
-    {% render_field enquiry.hieuxe class="form-control" placeholder="Hiệu xe" %}
-
-    <label for="vehicle_brand">Điện thoại</label>
-    {% render_field enquiry.dienthoai class="form-control" placeholder="Điện thoại" %}
-
-    <label for="vehicle_model">Địa chỉ</label>
-    {% render_field enquiry.diachi class="form-control" placeholder="Địa chỉ" %}
+    <label for="vehicle_no">Tên hiệu xe</label>
+    {% render_field enquiry.tenhieuxe class="form-control" placeholder="Tên Hiệu Xe" %}
 
     {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
     {% comment %} {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
@@ -62,9 +57,15 @@
 
     <input type="submit" value="Submit">
   </form>
+ 
 </div>
 
-
+<div style="margin-left: 40%">
+  {% for message in messages %}
+  <p {% if message.tags %} class="{{ message.tags }}" style="margin-left: 50%;" id="message_container" {% endif %}>{{ message }}</p>
+  {% endfor %}
+</div>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 {% endblock content %}

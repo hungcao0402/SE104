@@ -68,7 +68,6 @@
              <th>Mã phiếu sữa chữa</th>
               <th>Tổng thành tiền</th>
               <th>Ngày lập phiếu</th>
-              <th>Tình trạng thu tiền</th>
           </tr>
             {% for i in data %}
           <tr>
@@ -76,13 +75,14 @@
             <th>{{ i.maphieusuachua }}</th>
             <th>{{ i.tongthanhtien }}  </th>
             <th>{{ i.ngaylapphieu}}</th>
-            <th>{% if i.tinhtrangthutien == 0 %} Chưa thanh toán {% else %} Đã thanh toán {% endif %}</th>
            </tr> 
-            {%endfor%} 
+            {%endfor%}
       </table>
     </form> 
   </div>
-  
+  {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}" id="message_container" {% endif %}>{{ message }}</p>
+        {% endfor %}
   
   
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

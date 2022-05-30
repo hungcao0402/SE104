@@ -1,0 +1,53 @@
+{% extends 'gara/customerbase.html' %}
+{% block content %}
+	<!-- main content -->
+	{% comment %} <div class="wrapper"> {% endcomment %}
+
+
+<!-- ****** table  start ********** -->
+<div class="wrapper">
+    
+    <div style="margin-left:0px;" class="container">
+        
+        <div class="row">
+            <div class="col-12 col-m-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+						<h2 style="color:red; text-align:center" >Báo cáo tồn </h2>
+                        <h3 style="color:red; text-align:center"> {{month}}</h3>
+						
+					</div>
+					<div class="card-content">
+                
+                            <table id="example" class="table table-striped" >
+                                <thead>
+                                    <tr>
+                                        {% comment %} <th>STT</th> {% endcomment %}
+                                        <th>STT</th>
+                                        <th>Vật tư phụ tùng</th>
+                                        <th>Tồn đầu</th>
+                                        <th>Phát sinh</th>
+                                        <th>Tồn cuối</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for enq in enquiries %}
+                                    <tr>
+                                      <td>{{enq.MaVTPT_id}}</td>
+                                      <td>{{enq.MaVTPT.tenvattuphutung}}</td>
+                                      <td>{{enq.TonDau}}</td>
+                                      <td>{{enq.PhatSinh}}</td>
+                                      <td>{{enq.TonCuoi}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            
+                            </table>
+                        </div>
+                    </div>
+                    </div>           
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

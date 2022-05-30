@@ -7,29 +7,32 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from imp import C_BUILTIN
+from django.db.models import Sum, Count
+import pandas as pd
 
-@login_required(login_url='/view-request')
-def tiep_nhan(request):
-    enquiry=forms.TiepNhanForm()
-    count = PhieuTiepNhan.objects.filter(date=date.today()).count()
-    if count > 30: ##Cần sửa với tham số
-        enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
+# @login_required(login_url='/view-request')
+# def tiep_nhan(request):
+#     enquiry=TiepNhanForm()
+#     count = PhieuTiepNhan.objects.filter(date=date.today()).count()
+#     print(1)
+#     if count > QuyDinhHienHanh.objects.get(tenthamso='So xe sua chua toi da').giatri():
+#         enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
 
-        return render(request, 'gara/customerbase.html', {'enquiries': enquiries})
+#         return render(request, 'gara/customerbase.html', {'enquiries': enquiries})
 
-    if request.method=='POST':
-        enquiry=forms.TiepNhanForm(request.POST)
-        if enquiry.is_valid():
-            enquiry_x=enquiry.save()
-        return render(request, 'gara/customerbase.html', {'enquiries': enquiries})
+#     if request.method=='POST':
+#         enquiry=TiepNhanForm(request.POST)
+#         if enquiry.is_valid():
+#             enquiry_x=enquiry.save()
+#         return render(request, 'gara/customerbase.html', {'enquiries': enquiries})
     
-    return render(request,'gara/customerbase.html',{'enquiry':enquiry})
+#     return render(request,'gara/customerbase.html',{'enquiry':enquiry})
 
-def view_request(request):
-    enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
-    return render(request,'gara/customerbase.html', {'enquiries': enquiries})
+# def view_request(request):
+#     enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
+#     return render(request,'gara/customerbase.html', {'enquiries': enquiries})
 
 def logout(request):
     return render(request,'gara/logout.html',{})
@@ -191,18 +194,16 @@ def xacnhan_phieuthu(request,maxe, username):
         if nhapsotienthu.is_valid():
             print('enquiry is valid')
             tienthu=nhapsotienthu.cleaned_data['sotienthu']
-            if tienthu<xe_x.tienno:
-                print('chua hoan thanh')
-                return render(request,'phieuthutien/nhapsotienthu.html',context)   
-            else: 
+            if tienthu>xe_x.tienno:
+                messages.warning(request, 'Số tiền nhập không hợp lệ')
+                return render(request,'phieuthutien/nhapsotienthu.html',context)  
+            elif tienthu<=xe_x.tienno: 
                 phieuthutien_x=PhieuThuTien.objects.create(maxe_id=xe_x.maxe,sotienthu=tienthu)
-                xe_x.tienno=0
+                xe_x.tienno-= tienthu
                 xe_x.save()
                 print('da luu vao database')
-                for i in list_phieusua:
-                    i.tinhtrangthutien=1
-                    i.save()
-                print('da luu vao database')
+                messages.success(request, 'Thanh toán thành công!')
+
     return render(request,'phieuthutien/nhapsotienthu.html',context)       
 
 @login_required(login_url="/login")
@@ -264,19 +265,25 @@ def view_ctphieusuachua(request,mact_phieusuachua, username):
     nhap_ctvtpt=NhapCT_VatTuPhuTung
     staff = Staff.objects.get(username=username)
     picture = '../' + staff.profile_pic.url
-    context={'ct_phieusua':ct_phieusua,'nhap_ctvtpt':nhap_ctvtpt,'data':data,"customer":staff, "picture":picture}
     # context={'nhap_ctvtpt':nhap_ctvtpt}
     if request.method=='POST':
         print('request method is POST')
         nhap_ctvtpt=NhapCT_VatTuPhuTung(request.POST)
         if nhap_ctvtpt.is_valid():  
-                print('phieu nhap is valid')
-                tien1_ctvattu=nhap_ctvtpt.cleaned_data['dongia']*nhap_ctvtpt.cleaned_data['soluong']
-                print(nhap_ctvtpt.cleaned_data['dongia'],'...',nhap_ctvtpt.cleaned_data['soluong'])
-                vattu_x=VatTuPhuTung.objects.get(tenvattuphutung=nhap_ctvtpt.cleaned_data['tenvattuphutung'])
+            print('phieu nhap is valid')
+            vattu_x=VatTuPhuTung.objects.get(tenvattuphutung=nhap_ctvtpt.cleaned_data['tenvattuphutung'])
+            hieuso=nhap_ctvtpt.cleaned_data['soluong']-vattu_x.soluong   #Dùng để so sánh số lượng nhập với số lượng trong kho
+            if hieuso>0:
+                messages.warning(request, 'Số lượng vật tư trong kho không đủ-Ngô Đức Vũ')
+            else:
+                #Tự động nhân đơn giá vật tư
+                print('soluong du')
+                dongia_ban=int(vattu_x.dongia*1.05)
+                #end
+                tien1_ctvattu=dongia_ban*nhap_ctvtpt.cleaned_data['soluong']
                 CT_VatTuPhuTung.objects.create(mact_phieusuachua_id=mact_phieusuachua,
                 mavattuphutung_id=vattu_x.mavattuphutung, soluong=nhap_ctvtpt.cleaned_data['soluong'],
-                dongia=nhap_ctvtpt.cleaned_data['dongia'], tongthanhtien=tien1_ctvattu)
+                dongia=dongia_ban, tongthanhtien=tien1_ctvattu)
                 tong_tatcavattu=tien1_ctvattu+ct_phieusua.tongtienvattu
                 ct_phieusua.tongtienvattu=tong_tatcavattu
                 ct_phieusua.tongtien=tong_tatcavattu+ct_phieusua.tiencong
@@ -285,12 +292,18 @@ def view_ctphieusuachua(request,mact_phieusuachua, username):
                 tong_phieusua=phieusua_x.tongthanhtien + tien1_ctvattu
                 phieusua_x.tongthanhtien=tong_phieusua
                 phieusua_x.save()
-                #cap nhat tien no xe
+                            #cap nhat tien no xe
                 xe_x=Xe.objects.get(maxe=phieusua_x.maxe_id)
                 tienno_xe=xe_x.tienno+tien1_ctvattu
                 xe_x.tienno=tienno_xe
                 xe_x.save()
-                # capnhattienno(phieusua_x.maphieusuachua,tong_phieusua)                         
+                #cap nhat so luong vat tu
+                vattu_x.soluong= -1* hieuso
+                vattu_x.save()
+                # capnhattienno(phieusua_x.maphieusuachua,tong_phieusua)
+    
+            # capnhattienno(phieusua_x.maphieusuachua,tong_phieusua)                         
+    context={'ct_phieusua':ct_phieusua,'nhap_ctvtpt':nhap_ctvtpt,'data':data,"customer":staff, "picture":picture}
     return render(request,'phieusuachua/view_ctphieusua.html',context)
 
 @login_required(login_url="/login")
@@ -332,3 +345,369 @@ def delete_chitietvattu(request,mact_vattuphutung,mact_phieusuachua,maphieusuach
     phieusua_x.save()
     ctvt.delete()
     return redirect(f'/../../{username}/view_ctphieusua/{ctphieusua.mact_phieusuachua}')
+
+# Phan nay cua Cao Van Hung 
+
+@login_required(login_url="/login")
+def tiep_nhan(request, username):
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    enquiry=TiepNhanForm()
+    count = PhieuTiepNhan.objects.filter(date=date.today()).count()
+    if count > QuyDinhHienHanh.objects.get(TenThamSo='So xe sua chua toi da').GiaTri: ##Cần sửa với tham số
+        enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
+        messages.warning(request, 'Đã quá hạn số lượng tiếp nhận trong ngày')
+        return HttpResponseRedirect('request')
+
+    if request.method=='POST':
+        enquiry=TiepNhanForm(request.POST)
+        if enquiry.is_valid():
+            enquiry_x=enquiry.save()
+            try:
+                kh = KhachHang.objects.all().filter(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai)[0]
+            except:
+                kh = False
+            if not kh:
+                kh = KhachHang(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai, diachi=enquiry_x.diachi)
+                kh.save()
+            xe = Xe.objects.all().filter(bienso=enquiry_x.bienso, makhachhang=kh, mahieuxe=enquiry_x.hieuxe)
+            if not xe:
+                xe = Xe(bienso=enquiry_x.bienso, makhachhang=kh, mahieuxe=enquiry_x.hieuxe)
+                xe.save()
+
+        return HttpResponseRedirect('request')
+    
+    return render(request,'gara/add_request.html',{'enquiry':enquiry, 'customer': staff, "picture": picture})
+
+@login_required(login_url="/login")
+def view_request(request, username):
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    enquiry=PhieuTiepNhan.objects.all().filter(date=date.today())
+    return render(request,'gara/view_request.html', {'enquiries': enquiry, 'customer': staff, "picture": picture})
+
+@login_required(login_url="/login")
+def view_baocaoton(request, username):
+    form=AskDateForm()
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    if request.method == 'POST':
+        month = request.POST['month']
+        BCT = None
+        try:
+            BCT = BaoCaoTon.objects.filter(date__year=month.split('-')[0], date__month=month.split('-')[1])
+        except:
+            return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
+        if BCT: 
+            enquiry = ct_baocaoton.objects.all().filter(MaBCT=BCT[0].MaBCT).order_by('-MaVTPT_id').reverse()
+            return render(request, 'gara/baocaoton.html',  {'enquiries': enquiry, 'month': month})
+        else:
+            return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
+
+    return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
+
+@login_required(login_url="/login")
+def save_baocaoton(request, username):
+    now = date.today()
+    bct_before = BaoCaoTon.objects.filter(date__year=now.year, 
+                    date__month=now.month-1)
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    BCT = BaoCaoTon(date=date)
+    BCT.save()
+    vtpt = VatTuPhuTung.objects.all()
+    
+    if bct_before:
+        
+        for item in vtpt:
+            toncuoi = item.soluong
+            try:
+                phatsinh = nhapvattuphutung.objects.filter(date__year=now.year, date__month=now.month, mavattuphutrung=item.mavattuphutung)[0].soluong
+            except:
+                phatsinh = 0
+            tondau = bct_before.objects.all().filter(MaVTPT=item.mavattuphutung)[0].TonCuoi
+            tempt = ct_baocaoton(MaBCT=BCT, MaVTPT=item, TonDau=tondau, TonCuoi=toncuoi, PhatSinh=phatsinh)
+            tempt.save()
+    else:
+        for item in vtpt:
+            toncuoi = item.soluong
+            try:
+                phatsinh = nhapvattuphutung.objects.filter(date__year=now.year, date__month=now.month, mavattuphutrung=item.mavattuphutung)[0].soluong
+            except:
+                phatsinh = 0
+            tondau = 0
+            tempt = ct_baocaoton(MaBCT=BCT, MaVTPT=item, TonDau=tondau, TonCuoi=toncuoi, PhatSinh=phatsinh)
+            tempt.save()
+    
+    enquiry = ct_baocaoton.objects.all().filter(MaBCT=BCT).order_by('-MaVTPT_id').reverse()
+    return render(request, 'gara/baocaoton.html',  {'enquiries': enquiry, 'month': now, 'customer': staff, "picture": picture})
+
+@login_required(login_url="/login")
+def baocaoton_luachon(request, username):
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    context = {'customer': staff, "picture": picture}
+    return render(request, 'gara/baocaoton_luachon.html', context)
+
+#Phan cua Nguyen Minh Tri
+
+
+# ======================================================================
+# NGUYEN TRI
+# QUY DINH
+
+def update_default():
+    QuyDinhHienHanh.objects.create(TenThamSo="So hieu xe", GiaTri = 0)
+    QuyDinhHienHanh.objects.create(TenThamSo="So xe sua chua toi da", GiaTri = 0)
+    QuyDinhHienHanh.objects.create(TenThamSo="So loai vat tu", GiaTri = 0)
+    QuyDinhHienHanh.objects.create(TenThamSo="So loai tien cong", GiaTri = 0)
+    QuyDinhHienHanh.objects.create(TenThamSo="Ti le don gia nhap va ban", GiaTri = 1.05)
+
+def regular_update(request, username):
+    # enquiries = QuyDinhHienHanh.objects.all().filter()
+    # a = CapNhatQuyDinh()
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    if QuyDinhHienHanh.objects.all().exists() ==False:
+        update_default()
+    data = QuyDinhHienHanh.objects.all()
+    return render(request, 'gara/cap_nhat_quy_dinh.html',{'data':data, "customer": staff, "picture":picture})
+
+
+def save_regular_update(request):
+    if request.method == 'POST':
+        f = CapNhatQuyDinh(request.POST)
+        # a = QuyDinhHienHanh.objects.first()
+        if f.is_valid():
+            f.save()
+            print()
+            return redirect('/')
+        else:
+            return HttpResponse("ko co validate")
+    else:
+        return HttpResponse("not POST request")
+        
+
+
+# def delete_QuyDinh(self):
+#     QuyDinhHienHanh.objects.all().delete()
+
+
+def update_quydinh(request , mts, username):
+    quy_dinh = QuyDinhHienHanh.objects.get(MaThamSo=mts)
+    form = CapNhatQuyDinh(instance= quy_dinh)
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    if request.method == 'POST':
+        form = CapNhatQuyDinh(request.POST, instance= quy_dinh)
+        if form.is_valid():
+            form.save()
+            return redirect(f'../../{staff.username}/thamso')
+    context = {'form':form, "customer": staff, "picture":picture}
+    return render(request, 'gara/update_form_qd.html',{'form': form})
+    # return render(request, 'gara/update_form.html', context)
+
+# def delete_quydinh(request, mts):
+#     quy_dinh = QuyDinhHienHanh.objects.get(MaThamSo=mts)
+#     if request.method == "POST":
+#         quy_dinh.delete()
+#         return redirect('/thamso')
+#     context = {'item': quy_dinh}
+#     return render(request, 'gara/delete_qd.html', context)
+
+# ======================================================================
+# NGUYEN TRI
+# DOANH SO
+
+def add_ctBaoCaoDoanhSO(request):
+    psc_xe = PhieuSuaChua.objects.select_related("maxe__mahieuxe").all()
+    hieuxe = HieuXe.objects.all()
+    psc_xe.select_related("mahieuxe")
+    # maxe_luotsua_thanhtien = psc_xe.values("maxe").annotate(count=Count("maxe")).annotate(Sum=Sum("tongthanhtien"))
+    b = psc_xe.values("maxe").annotate(count=Count("maxe")).annotate(Sum=Sum("tongthanhtien"))
+    a = hieuxe.values("tenhieuxe","hieuxe")
+    for i in range(len(a)):
+        print(a[i]['tenhieuxe'], a[i]['hieuxe'])
+        sum_hx = 0
+        count_hx = 0
+        for j in range(len(b)):
+            if a[i]['hieuxe'] == b[j]["maxe"]:
+                sum_hx += b[j]["Sum"]
+                count_hx += b[j]["Sum"]
+        CT_BaoCaoDoanhSO.objects.create(mahieuxe= a[i]['hieuxe'], luotsua=sum_hx,thanhtien=count_hx)
+    return 0
+
+def data_xe_hieuxe_psc():
+    x = Xe.objects.all()
+    hx = HieuXe.objects.all()
+    psc = PhieuSuaChua.objects.all()
+    df_x = pd.DataFrame(x.values())
+    df_hx = pd.DataFrame(hx.values())
+    df_psc = pd.DataFrame(psc.values())
+    df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
+    df = df_psc.join(df_xhx.set_index("maxe"), on = "maxe_id")
+
+    df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
+    df['ngaytiepnhan'].dt.to_period('M')
+
+    df['ngaylapphieu'] = pd.to_datetime(df['ngaylapphieu'])
+    df['thanglapphieu']=df['ngaylapphieu'].dt.to_period('M')
+    df['month'] = df['ngaylapphieu'].dt.month
+    df['year'] = df['ngaylapphieu'].dt.year
+
+
+    ct_ds = df.groupby(["month","year","tenhieuxe"])['tongthanhtien'].agg(['sum','count']).reset_index()
+    total = df.groupby(["month","year"])['tongthanhtien'].agg(['sum','count']).reset_index()
+    data = pd.merge(ct_ds,total, how="left", on=['month','year']) #col: ['month', 'year', 'tenhieuxe', 'sum', 'count_x', 'count_y'],
+    data['tile']=data['count_x']/data['count_y']*100
+    return data
+
+def Bao_Cao_Doanh_So(request, username):
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    CT_BaoCaoDoanhSO.objects.all().delete()
+    BaoCaoDoanhSo.objects.all().delete()
+    x = Xe.objects.all()
+    hx = HieuXe.objects.all()
+    psc = PhieuSuaChua.objects.all()
+    df_x = pd.DataFrame(x.values())
+    df_hx = pd.DataFrame(hx.values())
+    df_psc = pd.DataFrame(psc.values())
+    df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
+    df = df_psc.join(df_xhx.set_index("maxe"), on = "maxe_id")
+
+    # df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
+    # df['ngaytiepnhan'].dt.to_period('M')
+
+    df['ngaylapphieu'] = pd.to_datetime(df['ngaylapphieu'])
+    df['thanglapphieu']=df['ngaylapphieu'].dt.to_period('M')
+    df['month'] = df['ngaylapphieu'].dt.month
+    df['year'] = df['ngaylapphieu'].dt.year
+
+    ct_ds = df.groupby(["month","year","tenhieuxe"])['tongthanhtien'].agg(['sum','count']).reset_index()
+    total = df.groupby(["month","year"])['tongthanhtien'].agg(['sum','count']).reset_index()
+    data = pd.merge(ct_ds,total, how="left", on=['month','year']) #col: ['month', 'year', 'tenhieuxe', 'sum', 'count_x', 'count_y'],
+    data['tile']=data['count_x']/data['count_y']*100
+    # data= data_xe_hieuxe_psc()
+    for tenhieuxe, luotsua, thanhtien, ti_le, stt  in zip(data['tenhieuxe'], data['count_x'], data['sum_x'], data['tile'], data.index):
+        CT_BaoCaoDoanhSO.objects.create(tenhieuxe=tenhieuxe,luotsua=luotsua,thanhtien=thanhtien,ti_le=ti_le,STT = stt)
+
+    # ===============================================================
+    for month, year, tongdoanhso in zip(total['month'],total['year'],total['sum']):
+        BaoCaoDoanhSo.objects.create(month =month,year = year, tongdoanhso= tongdoanhso)
+
+    if BaoCaoDoanhSo.objects.all().exists() ==False:
+        return HttpResponse("update that bai")
+
+    if CT_BaoCaoDoanhSO.objects.all().exists() ==False:
+        return HttpResponse("update that bai")
+
+    bcds = BaoCaoDoanhSo.objects.all()
+    ct_bcds = CT_BaoCaoDoanhSO.objects.all()
+    context={"bcds":bcds,"ct_bcds":ct_bcds, "customer": staff, "picture":picture}
+    return render(request, 'gara/bao_cao_doanh_thu.html',context)
+
+            
+
+def search_bcds(request, username):
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    if 'm'and'y' in request.GET:
+        m = request.GET['m']
+        y = request.GET['y']
+        data = data_xe_hieuxe_psc()
+        try:
+            bcds = BaoCaoDoanhSo.objects.filter(month = m, year = y)
+            search_ct_bcds = data.loc[(data['month']==int(m)) & (data['year']==int(y))]  
+        except:
+            try:
+                if y=='':
+                    bcds = BaoCaoDoanhSo.objects.filter(month = m)
+                    search_ct_bcds = data.loc[(data['month']==int(m))]
+                if m=='':
+                    bcds = BaoCaoDoanhSo.objects.filter(year = y)
+                    search_ct_bcds = data.loc[(data['year']==int(y))]
+            except:
+                bcds = BaoCaoDoanhSo.objects.all()
+                search_ct_bcds = data
+        
+        b = search_ct_bcds.index
+        ct_bcds = CT_BaoCaoDoanhSO.objects.filter(STT__in = list(b)) 
+    else:
+        bcds = BaoCaoDoanhSo.objects.all()
+    
+    context={"bcds":bcds, "ct_bcds":ct_bcds, "customer": staff, "picture":picture}
+    return render(request, 'gara/bao_cao_doanh_thu.html',context)
+
+# Phan cua Bui Nguyen Anh Trung
+def nhap_vtpt(request, username):
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    enquiry=NhapCTVatTuPhuTung()
+    if request.method=='POST':
+        enquiry=NhapCTVatTuPhuTung(request.POST)
+        
+        if enquiry.is_valid():
+            try:
+                vtpt = VatTuPhuTung.objects.get(tenvattuphutung=request.POST['tenvattuphutung'])
+            except:
+                vtpt= False
+
+            if vtpt:
+                vtpt.dongia=request.POST['dongia']
+                vtpt.soluong+=int(request.POST['soluong'])
+                vtpt.save()
+            else:
+                if VatTuPhuTung.objects.all().count() < QuyDinhHienHanh.objects.get(TenThamSo='So loai vat tu').GiaTri:
+                    vtpt = VatTuPhuTung(tenvattuphutung=request.POST['tenvattuphutung'], dongia=request.POST['dongia'], soluong=request.POST['soluong'])
+                    vtpt.save()
+                    messages.success(request, 'Nhập thành công')
+                else:
+                    return HttpResponse('Quá số lượng tối đa vật tư phụ tùng')
+            return HttpResponseRedirect('nhap_vtpt')
+    
+    return render(request,'phieunhapvtpt/nhapphutung.html',{'enquiry':enquiry, 'customer':staff, 'picture':picture})
+
+def them_hieuxe(request, username):
+    enquiry=ThemHieuXe
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    if request.method=='POST':
+        enquiry=ThemHieuXe(request.POST)
+        print('POST is method')
+        if enquiry.is_valid():
+            print('enquiry is valid')
+            tenhieuxe=request.POST['tenhieuxe']
+            soluonghieuxe=HieuXe.objects.all().count()
+            print('soluonghieuxe la', soluonghieuxe)
+            if soluonghieuxe>200:   #Sửa với tham số
+                messages.warning(request,'so luong hieu xe qua 200')
+                return HttpResponseRedirect('nhap_hieuxe')
+            else:    
+                HieuXe.objects.create(tenhieuxe=tenhieuxe)
+                messages.success(request, 'Nhập hiệu xe thành công')
+                return HttpResponseRedirect('nhap_hieuxe')
+    context={'enquiry':enquiry, 'customer':staff, 'picture':picture}
+    return render(request,'bonus/themhieuxe.html',context)
+
+def them_tiencong(request, username):
+# Sửa loai tien thành unique =true
+    print('Hello')
+    enquiry=ThemTienCong
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    if request.method=='POST':
+        enquiry=ThemTienCong(request.POST)
+        print('POST is method')
+        if enquiry.is_valid():
+            print('enquiry is valid')
+            loaitiencong=request.POST['loaitiencong']
+            soluongtiencong=TienCong.objects.all().count()
+            print('soluongtiencong la', soluongtiencong)
+            if soluongtiencong>200:   #Sửa với tham số
+                messages.warning(request,'số lượng không được vượt quá 100')
+            else:    
+                TienCong.objects.create(loaitiencong=loaitiencong,tiencong=request.POST['tiencong'])
+                messages.success(request, 'Thêm tiền công thành công')
+    context={'enquiry':enquiry, 'customer':staff, 'picture':picture}
+    return render(request,'bonus/themtiencong.html',context)

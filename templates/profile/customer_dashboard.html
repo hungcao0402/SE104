@@ -2,11 +2,11 @@
 {% load static %}
 {% block content %}
 
-	<!-- main content -->
-	<div class="wrapper">
+<!-- main content -->
+<div class="wrapper">
 
-<!-- ****** cards start ********** -->
-		<a href="/{{customer.username}}/nhap_biensothutien">
+	<!-- ****** cards start ********** -->
+	<a href="/{{customer.username}}/add_request">
 		<div class="row">
 			<div class="col-3 col-m-6 col-sm-6">
 				<div class="counter bg-primary">
@@ -16,50 +16,158 @@
 					<h3>{{new_request_made}}</h3>
 					<p>Lập phiếu tiếp nhận</p>
 				</div>
-			</a>
-			</div>
-		
-		<a href="/{{customer.username}}/nhap_biensothutien">
-				<div class="col-3 col-m-6 col-sm-6">
-				<div class="counter bg-warning">
-					<p>
-						<i class="fas fa-spinner"></i>
-					</p>
-					<h3>{{work_in_progress}}</h3>
-					<p>Lập phiếu thu tiền</p>
-				</div>
-			</a>
-			</div>
-		
-		
-		<a href="/create_new_staff">
-			<div class="col-3 col-m-6 col-sm-6">
-				<div class="counter bg-success">
-					<p>
-						<i class="fas fa-check-circle"></i>
-					</p>
-					<h3>{{work_completed}}</h3>
-					<p>Tạo tài khoản nhân viên</p>
-				</div>
-		</a>
-			</div>
-			<a href="../{{customer.username}}/nhap_biensosua">
-			<div class="col-3 col-m-6 col-sm-6">
-				<div class="counter bg-danger">
-					<p>
-						<i class="fas fa-rupee-sign"></i>
-					</p>
-					<h3>{{bill}}</h3>
-					<p>Lập phiếu sửa chữa</p>
-				</div>
-			</a>
-			</div>
+	</a>
+</div>
+	<a href="/{{customer.username}}/nhap_biensothutien">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-warning">
+				<p>
+					<i class="fas fa-spinner"></i>
+				</p>
+				<h3>{{work_in_progress}}</h3>
+				<p>Lập phiếu thu tiền</p>
 		</div>
-		
-		<br><br><br><br>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</a>
+	</div>
+
+
+	<a href="/create_new_staff">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-success">
+				<p>
+					<i class="fas fa-check-circle"></i>
+				</p>
+				<h3>{{work_completed}}</h3>
+				<p>Tạo tài khoản nhân viên</p>
+			</div>
+		</a>
+	</div>
+	<a href="../{{customer.username}}/nhap_biensosua">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-danger">
+				<p>
+					<i class="fas fa-rupee-sign"></i>
+				</p>
+				<h3>{{bill}}</h3>
+				<p>Lập phiếu sửa chữa</p>
+			</div>
+	</a>
+		</div>
+</div>
+</div>
+
+<div class="wrapper">
+
+	<!-- ****** cards start ********** -->
+	<a href="/{{customer.username}}/baocaoton">
+		<div class="row">
+			<div class="col-3 col-m-6 col-sm-6">
+				<div class="counter bg-primary">
+					<p>
+						<i class="fas fa-tasks"></i>
+					</p>
+					<h3>{{new_request_made}}</h3>
+					<p>Báo cáo tồn</p>
+				</div>
+	</a>
+</div>
+	<a href="/{{customer.username}}/thamso">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-warning">
+				<p>
+					<i class="fas fa-spinner"></i>
+				</p>
+				<h3>{{work_in_progress}}</h3>
+				<p>Cập nhật quy định</p>
+		</div>
+	</a>
+	</div>
+
+
+	<a href="../../{{customer.username}}/nhap_vtpt">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-success">
+				<p>
+					<i class="fas fa-check-circle"></i>
+				</p>
+				<h3>{{work_completed}}</h3>
+				<p>Nhập vật tư phụ tùng</p>
+			</div>
+		</a>
+	</div>
+	<a href="../{{customer.username}}/nhap_hieuxe">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-danger">
+				<p>
+					<i class="fas fa-dollar-sign"></i>
+				</p>
+				<h3>{{bill}}</h3>
+				<p>Nhập thông tin hiệu xe</p>
+			</div>
+	</a>
+		</div>
+</div>
+</div>
+
+
+<div class="wrapper">
+
+	<!-- ****** cards start ********** -->
+	<a href="/{{customer.username}}/nhap_tiencong">
+		<div class="row">
+			<div class="col-3 col-m-6 col-sm-6">
+				<div class="counter bg-primary">
+					<p>
+						<i class="fas fa-tasks"></i>
+					</p>
+					<h3>{{new_request_made}}</h3>
+					<p>Nhập thông tin tiền công</p>
+				</div>
+	</a>
+</div>
+	<a href="/{{customer.username}}/thamso">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-warning">
+				<p>
+					<i class="fas fa-spinner"></i>
+				</p>
+				<h3>{{work_in_progress}}</h3>
+				<p>Cập nhật quy định</p>
+		</div>
+	</a>
+	</div>
+
+
+	<a href="../../{{customer.username}}/nhap_vtpt">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-success">
+				<p>
+					<i class="fas fa-check-circle"></i>
+				</p>
+				<h3>{{work_completed}}</h3>
+				<p>Nhập vật tư phụ tùng</p>
+			</div>
+		</a>
+	</div>
+	<a href="../{{customer.username}}/nhap_biensosua">
+		<div class="col-3 col-m-6 col-sm-6">
+			<div class="counter bg-danger">
+				<p>
+					<i class="fas fa-rupee-sign"></i>
+				</p>
+				<h3>{{bill}}</h3>
+				<p>Lập phiếu sửa chữa</p>
+			</div>
+	</a>
+		</div>
+</div>
+</div>
+
+
+<br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <!-- ****** cards end ********** -->
 
-	</div>
-	<!-- end main content -->
+</div>
+<!-- end main content -->
 {% endblock content %}

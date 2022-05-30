@@ -77,8 +77,8 @@
       {%render_field nhap_ctvtpt.tenvattuphutung%}  <p></p>
       <label>Số lượng: </label>
       {%render_field nhap_ctvtpt.soluong%}  <p></p>
-      <label>Đơn giá: </label>
-      {%render_field nhap_ctvtpt.dongia%}  <p></p>
+      <!-- <label>Đơn giá: </label>
+      {%render_field dongia_ban%}  <p></p> -->
       <input type="submit" value="Submit">
 
     {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
@@ -120,6 +120,8 @@
     QUAY LẠI PHIẾU SỮA CHỮA
   </button>
 </a>
-
+{% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}" id="message_container" {% endif %}>{{ message }}</p>
+        {% endfor %}
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 {% endblock content %}
