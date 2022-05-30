@@ -3,9 +3,8 @@ from . import forms
 from .models import *
 from datetime import date
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
-# @login_required(login_url='/view-request')
 def tiep_nhan(request):
     enquiry=forms.TiepNhanForm()
     count = PhieuTiepNhan.objects.filter(date=date.today()).count()
@@ -24,35 +23,60 @@ def tiep_nhan(request):
 
 def view_request(request):
     enquiry=PhieuTiepNhan.objects.all().filter(date=date.today())
-
- 
     return render(request,'gara/view_request.html', {'enquiries': enquiry})
 
-# def tao_bao_cao_ton(request):
-#     p = baocaoton()
-#     for i in vattuphutung.objects.all():
-        # thangtruoc = 
-        # tondau=baocaoton.objects.filter(thangtruoc)
 
-        # c = ct_baocaoton
-#     
-    #  phatsinh = nhapvattuphutung().objects
-#     toncuoi=    
+def view_baocaoton(request):
+    form=forms.AskDateForm()
 
-def CapNhatThamSo(request):
-    # a = forms.CapNhatQuyDinh()
-    data = THAMSO.objects.all()
+    if request.method == 'POST':
+        month = request.POST['month']
+        BCT = None
+        try:
+            BCT = BaoCaoTon.objects.filter(date__year=month.split('-')[0], date__month=month.split('-')[1])
+        except:
+            return render(request,'gara/date_to_report.html',{'form':form})
+        if BCT: 
+            enquiry = ct_baocaoton.objects.all().filter(MaBCT=BCT[0].MaBCT).order_by('-MaVTPT_id').reverse()
+            return render(request, 'gara/baocaoton.html',  {'enquiries': enquiry, 'month': month})
+        else:
+            return render(request,'gara/date_to_report.html',{'form':form})
 
-    # if request.method == 'POST':
-    #     f = forms.CapNhatQuyDinh()
-    #     f.GiaTri = forms.CapNhatQuyDinh(request.POST)
-    #     # a = QuyDinhHienHanh.objects.filter(TenThamSo = "So loai vat tu")
-    #     a = THAMSO.objects.first()
-    #     f.TenThamSo = a.TenThamSo
-        # if f.is_valid():
-        #     f.save()
-        #     return HttpResponse("luu oke")
-        # else:
-        #     return HttpResponse("ko co validate")
+    return render(request,'gara/date_to_report.html',{'form':form})
 
-    return render(request, 'gara/cap_nhat_quy_dinh.html',{'data':data})
+def save_baocaoton(request):
+    now = date.today()
+    bct_before = BaoCaoTon.objects.filter(date__year=now.year, 
+                    date__month=now.month-1)
+    
+    BCT = BaoCaoTon(date=date)
+    BCT.save()
+    vtpt = VatTuPhuTung.objects.all()
+    
+    if bct_before:
+        
+        for item in vtpt:
+            toncuoi = item.soluong
+            try:
+                phatsinh = nhapvattuphutung.objects.filter(date__year=now.year, date__month=now.month, mavattuphutrung=item.mavattuphutung)[0].soluong
+            except:
+                phatsinh = 0
+            tondau = bct_before.objects.all().filter(MaVTPT=item.mavattuphutung)[0].TonCuoi
+            tempt = ct_baocaoton(MaBCT=BCT, MaVTPT=item, TonDau=tondau, TonCuoi=toncuoi, PhatSinh=phatsinh)
+            tempt.save()
+    else:
+        for item in vtpt:
+            toncuoi = item.soluong
+            try:
+                phatsinh = nhapvattuphutung.objects.filter(date__year=now.year, date__month=now.month, mavattuphutrung=item.mavattuphutung)[0].soluong
+            except:
+                phatsinh = 0
+            tondau = 0
+            tempt = ct_baocaoton(MaBCT=BCT, MaVTPT=item, TonDau=tondau, TonCuoi=toncuoi, PhatSinh=phatsinh)
+            tempt.save()
+    
+    enquiry = ct_baocaoton.objects.all().filter(MaBCT=BCT).order_by('-MaVTPT_id').reverse()
+    return render(request, 'gara/baocaoton.html',  {'enquiries': enquiry, 'month': now})
+
+def baocaoton_luachon(request):
+    return render(request, 'gara/baocaoton_luachon.html')

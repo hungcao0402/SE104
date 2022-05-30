@@ -1,0 +1,143 @@
+{% extends 'gara/customerbase.html' %}
+{% load widget_tweaks %}
+
+
+
+
+{% block content %}
+{% comment %} 
+<head>
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 3.5rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 1.5rem;
+      padding: 1%;
+      width: 30%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+    .xyz{
+      
+      display: table;
+      margin-right: auto;
+      margin-left: auto;
+            }
+    
+  </style>
+</head>
+
+<br><br><br><br>
+<form method="post"  autocomplete="off">
+  {% csrf_token %}
+  <div class="container register-form">
+     
+    <div class="form xyz">
+      <div class="form-content">
+        <div class="note">
+            <p>Nhập tháng và năm vào ô dưới đaay</p>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-12">
+     
+            <input type="month" name="month"><br /><br />
+          </div>
+
+        </div>
+        <button type="submit" class="btnSubmit">Tìm kiếm</button>
+      </div>
+    </div>
+  </div>
+
+</form> {% endcomment %}
+
+
+<head>
+
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+
+    .btnSubmit {
+      text-align: center;
+    }
+    .xyz{
+      
+      display: table;
+      margin-right: auto;
+      margin-left: auto;
+            }
+    .sidebar{
+        top:0px;
+    }
+  </style>
+
+</head>
+
+
+
+
+<form class="box xyz"  method="post"  autocomplete="off">
+
+  {% csrf_token %}
+    <div class="row">
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h6 class="panel-title">Nhập tháng và năm</h6>
+
+        </div>
+
+        <br></br>
+        <div style="text-align: center">
+        <input  type="month" name="month"><br /><br/>
+        <input type="submit" style="margin-left: 200px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;    background-color: #ffec00;" name="submit" value="Tìm kiếm">
+        </div>
+      </div>
+
+
+    
+  </div>
+</form>
+
+{% endblock content %}

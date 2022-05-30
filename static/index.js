@@ -9,6 +9,7 @@ const themeLight = 'light'
 
 const body = document.getElementsByTagName('body')[0]
 
+
 function setCookie(cname, cvalue, exdays) {
   var d = new Date()
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000))
@@ -113,3 +114,4 @@ var lineChart = new Chart(ctx, {
 		bezierCurve: false,
 	}
 })
+
