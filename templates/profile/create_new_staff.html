@@ -70,7 +70,6 @@
             text-transform: uppercase;
             font-weight: 500
         }
-
         .box input[type="text"]:focus,
         .box input[type="password"]:focus {
             width: 300px;
@@ -90,7 +89,20 @@
             transition: 0.25s;
             cursor: pointer
         }
-
+        .box input[type="checkbox"] {
+            border: 0;
+            background: green;
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+            border: 2px solid #2ecc71;
+            padding: 14px 40px;
+            outline: none;
+            color: white;
+            border-radius: 24px;
+            transition: 0.25s;
+            cursor: pointer
+        }
         .box input[type="submit"]:hover {
             background: #2ecc71
         }
@@ -98,52 +110,25 @@
         .forgot {
             text-decoration: underline
         }
+        a { text-decoration: none; }
 
-        ul.social-network {
-            list-style: none;
-            display: inline;
-            margin-left: 0 !important;
-            padding: 0
-        }
-
-        .social-network a.icoFacebook:hover i,
-        .social-network a.icoTwitter:hover i,
-        .social-network a.icoGoogle:hover i {
-            color: #fff
-        }
-
-        a.socialIcon:hover,
-        .socialHoverClass {
-            color: #44BCDD
-        }
-
-        .social-circle li a {
-            display: inline-block;
-            position: relative;
-            margin: 0 auto 0 auto;
-            border-radius: 50%;
+        .success {
+            color:#fafafa;
+            font-size: 20px;
+            border-style: double;
+            background-color: #311ae0;
+            height:60px;
+            width: 320px;
             text-align: center;
-            width: 50px;
-            height: 50px;
-            font-size: 20px
         }
-
-        .social-circle li i {
-            margin: 0;
-            line-height: 50px;
-            text-align: center
-        }
-
-        .social-circle li a:hover i,
-        .triggeredHover {
-            transform: rotate(360deg);
-            transition: all 0.2s
-        }
-
-        .social-circle i {
-            color: #fff;
-            transition: all 0.8s;
-            transition: all 0.8s
+        .warning {
+            color:#fafafa;
+            font-size: 20px;
+            border-style: double;
+            background-color: #ff0000;
+            height:60px;
+            width: 320px;
+            text-align: center;
         }
     </style>
 </head>
@@ -155,29 +140,37 @@
                 <div class="card">
                     <form class="box" method="POST" enctype="multipart/form-data"  style="margin-top: -350px; margin-left: -250px;">
                         {% csrf_token %}
-                        <h1>CUSTOMER SIGNUP</h1>
-                        <h3 style="color:white;"> Please enter your details to create account !<h3>
+                        <h1>TẠO TÀI KHOẢN NHÂN VIÊN</h1>
+                        <h3 style="color:white;"> Nhập các thông tin sau để tạo tài khoản cho nhân viên<h3>
 
-                                {% render_field userForm.firstname placeholder="First Name" %}
-                                {% render_field userForm.lastname placeholder="Last Name" %}
+                                {% render_field userForm.firstname placeholder="Tên" %}
+                                {% render_field userForm.lastname placeholder="Họ" %}
                                 {% render_field userForm.username class="form-control" placeholder="Username" %}
-                                {% render_field userForm.emails class="form-control" placeholder="Emails" %}
-                                {% render_field userForm.password class="form-control" placeholder="Password" type="password" %}
-                                {% render_field userForm.address class="form-control" placeholder="Address" %}
-                                {% render_field userForm.mobile class="form-control" placeholder="Mobile" %}
+                                {% render_field userForm.emails class="form-control" placeholder="Email" %}
+                                {% render_field userForm.password class="form-control" placeholder="Mật khẩu" type="password" %}
+                                {% render_field userForm.address class="form-control" placeholder="Địa chỉ" %}
+                                {% render_field userForm.mobile class="form-control" placeholder="Số điện thoại" %}                                
                                 {% render_field userForm.profile_pic class="input-btn"%}
 
-                                <input type="submit" name="" value="Create">
-                                <a href = '/login/' style="color:#14c4d1; font-size: 10px">Return to loggin page</a>
+                                <input type="submit" name="" value="Tạo tài khoản">
+                                <a href = '/dashboard/{{username}}' style="color:#14c4d1; font-size: 10px">Trở về trang chủ</a>
 
                     </form>
                 </div>
             </div>
         </div>
+        {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}" id="message_container" {% endif %}>{{ message }}</p>
+        {% endfor %}
     </div>
     <br><br><br><br><br><br><br><br><br>
     <br><br><br><br><br><br><br><br><br>
     <br><br><br><br>
 </body>
-
+<script>
+    var message_ele = document.getElementById("message_container");
+setTimeout(function(){ 
+   message_ele.style.display = "none"; 
+}, 1000);
+</script>
 </html>

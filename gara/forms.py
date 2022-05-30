@@ -5,10 +5,10 @@ import datetime
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 
-class TiepNhanForm(forms.ModelForm):
-    class Meta:
-        model= PhieuTiepNhan
-        fields=['tenchuxe','bienso','hieuxe','dienthoai','diachi']
+# class TiepNhanForm(forms.ModelForm):
+#     class Meta:
+#         model= PhieuTiepNhan
+#         fields=['tenchuxe','bienso','hieuxe','dienthoai','diachi']
 
 # class CustomerUserForm(forms.ModelForm):
 #     class Meta:
@@ -21,10 +21,11 @@ class TiepNhanForm(forms.ModelForm):
 
 # class CustomerForm(forms.ModelForm):
 #     class Meta:
-#         model=models.Customer
+#         model=models.Staff
 #         fields=['address','mobile','profile_pic']
 #         fields= '__all__'
 
+#Phan cua Chau Tan -20520926
 class RegisterForm(forms.ModelForm):
     firstname = forms.CharField(max_length=20)
     lastname = forms.CharField(max_length=20)
@@ -35,26 +36,43 @@ class RegisterForm(forms.ModelForm):
     emails = forms.EmailField(max_length=90)
     profile_pic = forms.ImageField()
     class Meta:
-        model= Customer
+        model= Staff
         fields=['username','firstname','lastname','emails','password','mobile', 'address','profile_pic']
         widgets = {
             'password': forms.PasswordInput()
         }
-class CustomerUpdateForm(UserChangeForm):
+class StaffUpdateForm(UserChangeForm):
     emails = forms.CharField(max_length=90)
     class Meta:
-        model = Customer
+        model = Staff
         fields= ['profile_pic','firstname','lastname','emails','mobile','address']
         # fields = '__all__'
         widgets = {
             'password': forms.PasswordInput()
         }
-class CustomerUpdateAccount(UserChangeForm):
+class StaffUpdateAccount(UserChangeForm):
     password = forms.CharField(max_length=20)
     class Meta:
-        model = Customer
+        model = Staff
         fields = ['username','password']
         widgets = {
             'password': forms.PasswordInput()
         }
-    
+# Phan cua Ngo Duc Vu -20520950
+class NhapBienSoThu(forms.Form):
+    bienso=forms.ModelChoiceField(queryset=Xe.objects.all())
+class NhapSoTienThu(forms.Form):
+    sotienthu=forms.IntegerField()
+class NhapBienSoSua(forms.Form):
+    bienso=forms.ModelChoiceField(queryset=Xe.objects.all().values_list('bienso',flat=True))
+class NhapCTSuaChua(forms.Form):
+    # maphieusuachua=forms.ModelChoiceField(queryset=PhieuSuaChua.objects.all())
+    solan=forms.IntegerField()
+    loaitiencong=forms.ModelChoiceField(queryset=TienCong.objects.all())
+    # tiencong=forms.IntegerField()
+    noidung=forms.CharField(max_length=100)
+    # tongtien=forms.IntegerField()
+class NhapCT_VatTuPhuTung(forms.Form):
+    tenvattuphutung=forms.ModelChoiceField(queryset=VatTuPhuTung.objects.all())   #.values_list('tenvattuphutung',flat=True))
+    soluong=forms.IntegerField()
+    dongia=forms.IntegerField()

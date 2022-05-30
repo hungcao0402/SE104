@@ -1,0 +1,125 @@
+{% extends 'gara/customerbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<head>
+  <style media="screen">
+    input[type=text], select,input[type=number] , textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+  
+
+
+  </style>
+
+
+</head>
+
+
+
+<br><br><br><br><br>
+<h1 style="text-align:center;">THÔNG TIN PHIẾU CHI TIẾT SỮA CHỮA</h1>
+
+
+
+<div>
+    <form  style="margin-left:200px;margin-right:200px;">
+  <p></p>
+    <label for="vehicle_no">Mã chi tiết phiếu sữa chữa: </label>
+    {%render_field ct_phieusua.mact_phieusuachua%}
+    <p></p>
+    <label for="vehicle_no">Số lần: </label>
+    {%render_field ct_phieusua.solan%}
+    <p></p>
+    <label for="vehicle_no">Mã tiền công: </label>
+    {%render_field ct_phieusua.matiencong%}
+    <p></p>
+    <label for="vehicle_no">Tiền công: </label>
+    {%render_field ct_phieusua.tiencong%}
+    <p></p>
+    <label for="vehicle_no">Nội dung: </label>
+    {%render_field ct_phieusua.noidung%}
+    <p></p>
+    <label for="vehicle_no">Tổng tiền vật tư: </label>
+    {%render_field ct_phieusua.tongtienvattu%} 
+     <p></p>
+    <label for="vehicle_no">Tổng tiền: </label>
+    {%render_field ct_phieusua.tongtien%}  <p></p>
+    <p>-----------------------------------------------</p>
+  </form>
+
+
+          <h2 style="text-align:center;">CÁC PHIẾU SỬ DỤNG VẬT TƯ PHỤ TÙNG</h1>
+  <form method="post" style="margin-left:200px;margin-right:200px;">
+      {% csrf_token %}
+    
+      <label>Chọn vật tư phụ tùng: </label>
+      {%render_field nhap_ctvtpt.tenvattuphutung%}  <p></p>
+      <label>Số lượng: </label>
+      {%render_field nhap_ctvtpt.soluong%}  <p></p>
+      <label>Đơn giá: </label>
+      {%render_field nhap_ctvtpt.dongia%}  <p></p>
+      <input type="submit" value="Submit">
+
+    {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
+    {% comment %} {% render_field ct_phieusua.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
+
+  </form>
+
+
+  <form style="margin-left:200px;margin-right:200px;">
+    <table style="margin: top 200px;" border="1" >  
+
+        <tr>
+            <th>Mã vật tư</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Tổng tiền</th>
+            <th>Chức năng</th>
+        </tr>
+          {% for i in data %}
+        <tr>
+          <th> <br>{{ i.mavattuphutung_id }} </br>  </th>
+          <th><br> {{ i.soluong}} </br></th>
+          <th><br> {{ i.dongia }} </br></th>
+          <th><br> {{ i.tongthanhtien }} </br></th>
+          <th><br>  <button> <a href="../../{{customer.username}}/delete_chitietvattu/{{i.mact_vattuphutung}}/{{ct_phieusua.mact_phieusuachua}}/{{ct_phieusua.maphieusuachua_id}}">DELETE</a></button></th></br></th>
+        </tr> 
+          {%endfor%} 
+    </table>
+    
+  </form> 
+
+  
+</div>
+
+</div>
+
+<a href="../../{{customer.username}}/view_phieusua/{{ct_phieusua.maphieusuachua_id}}">
+  <button class="button-53"  style="margin-left: 33%;">
+    QUAY LẠI PHIẾU SỮA CHỮA
+  </button>
+</a>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock content %}

@@ -6,6 +6,7 @@
 	<div class="wrapper">
 
 <!-- ****** cards start ********** -->
+		<a href="/{{customer.username}}/nhap_biensothutien">
 		<div class="row">
 			<div class="col-3 col-m-6 col-sm-6">
 				<div class="counter bg-primary">
@@ -13,37 +14,49 @@
 						<i class="fas fa-tasks"></i>
 					</p>
 					<h3>{{new_request_made}}</h3>
-					<p>New Request Made</p>
+					<p>Lập phiếu tiếp nhận</p>
 				</div>
+			</a>
 			</div>
-			<div class="col-3 col-m-6 col-sm-6">
+		
+		<a href="/{{customer.username}}/nhap_biensothutien">
+				<div class="col-3 col-m-6 col-sm-6">
 				<div class="counter bg-warning">
 					<p>
 						<i class="fas fa-spinner"></i>
 					</p>
 					<h3>{{work_in_progress}}</h3>
-					<p>Vehicle Repair In Progress</p>
+					<p>Lập phiếu thu tiền</p>
 				</div>
+			</a>
 			</div>
+		
+		
+		<a href="/create_new_staff">
 			<div class="col-3 col-m-6 col-sm-6">
 				<div class="counter bg-success">
 					<p>
 						<i class="fas fa-check-circle"></i>
 					</p>
 					<h3>{{work_completed}}</h3>
-					<p>Vehicle Repaired</p>
+					<p>Tạo tài khoản nhân viên</p>
 				</div>
+		</a>
 			</div>
+			<a href="../{{customer.username}}/nhap_biensosua">
 			<div class="col-3 col-m-6 col-sm-6">
 				<div class="counter bg-danger">
 					<p>
 						<i class="fas fa-rupee-sign"></i>
 					</p>
 					<h3>{{bill}}</h3>
-					<p>Total Bill</p>
+					<p>Lập phiếu sửa chữa</p>
 				</div>
+			</a>
 			</div>
-		</div><br><br><br><br>
+		</div>
+		
+		<br><br><br><br>
       <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <!-- ****** cards end ********** -->
 
