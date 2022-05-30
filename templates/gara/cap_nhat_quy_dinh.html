@@ -8,8 +8,10 @@
             max-width: 720px;
             height: 200px;
             padding: 15px;
-            margin: 15px auto 0 auto;   
+            margin: 15px auto 0 auto;  
+            /* display: flex;  */
             justify-content: center;
+            /* background-color: antiquewhite; */
         }
 
         .form_update{
@@ -53,6 +55,8 @@
         .card-content{
             margin-right: 100px;
             margin-left: 100px;
+            display: flex;
+            justify-content: center;
         }
 
         .submit-row{
@@ -67,20 +71,41 @@
         }
         .update-row{
             background-color: #19b15b;
-
         } 
+        .update-row:hover{
+            background-color: rgb(52, 225, 167);
+        }
         .delete-row{
             background-color: rgb(241, 68, 68);
         }
+
+        /* ========= table=========== */
+        table {
+            border-collapse: collapse;
+            width: 75%;
+        }
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:nth-child(even) {background-color: #a5e2fd;}
     </style>
+    
 </head>
 
 
 <body>
     <br><br><br><br><br>
-<h3 style="text-align:center;">CẬP NHẬT QUY ĐỊNH</h3>
+<h1 style="text-align:center;">CẬP NHẬT QUY ĐỊNH</h1>
 
-<div class="form_container" >
+<!-- ================ FORM CAP NHAT QUY DINH=================== -->
+<!-- <div class="form_container" >
     <form action="{% url 'gara:save'%}"  class="form_update" method="post">
         {% csrf_token %}
         <div class="sub_element">
@@ -92,8 +117,7 @@
         </div>
         <input type="submit" class="form_submit" value="Cập nhật quy định">
     </form> 
-
-</div>
+</div> -->
 
 
 
@@ -102,11 +126,11 @@
     <table>
         <thead>
             <tr>
-                <th>MaThamSo</th>
-                <th>TenThamSo</th>
-                <th>GiaTri</th>
+                <th>Mã Tham số</th>
+                <th>Tên tham số</th>
+                <th>Giá trị</th>
                 <th>Cập nhật</th>
-                <th>Xóa</th>
+                <!-- <th>Xóa</th> -->
             </tr>
         </thead>
         <tbody>
@@ -116,7 +140,7 @@
                 <td> {{ i.TenThamSo }}</td>
                 <td> {{ i.GiaTri }}</td>
                 <td><a href="{% url 'gara:update_quydinh' i.MaThamSo %}" class="update-row submit-row">Cập nhật</a></td>
-                <td><a href="{% url 'gara:delete_quydinh' i.MaThamSo %}" class = "delete-row submit-row">Xóa</a></td>
+                <!-- <td><a href="{% url 'gara:delete_quydinh' i.MaThamSo %}" class = "delete-row submit-row">Xóa</a></td> -->
             </tr>
             {% endfor %}
 

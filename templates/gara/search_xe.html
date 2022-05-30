@@ -1,0 +1,119 @@
+{% extends 'gara/customerbase.html' %}
+{% block content %}
+
+<head>
+    <style>
+        .form_container{
+            max-width: 720px;
+            height: 100px;
+            padding: 15px;
+            margin: auto;   
+            display: flex;
+            justify-content: center;
+            background-color: aqua;
+        }
+
+        .form_search{
+            width: 500px;
+            background-color: rgb(104, 195, 234);
+            border-radius: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-control{
+            /* width: 90px; */
+            min-height: 30px;
+            border-radius: 5px;
+            border: none;
+        }
+        .mr-sm-1{
+            margin-right: 10px;
+        }
+        .submit{
+            background-color: rgb(30, 173, 73);
+            color: aliceblue;
+            border: none;
+            width: 90px;
+            min-height: 30px;
+            border-radius: 5px;
+            /* margin: 15px ; */
+        }
+        .submit:hover{
+            background-color: #53e994;
+            cursor: pointer;
+        }
+         /* ========= table=========== */
+        .card-content{
+            /* background-color: antiquewhite; */
+            display: flex;
+            justify-content: center;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 75%;
+        }
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:nth-child(even) {background-color: #a5e2fd;}
+    </style>
+</head>
+
+<body>
+    <br><br><br><br><br>
+<h1 style="text-align:center;">Tra cứu xe</h1>
+    <div class="form_container" >
+        <form action="{% url 'gara:after_search'%}" class="form_search">
+            {% csrf_token %}
+            <input class="form-control mr-sm-1" name="khachhang" type="search" placeholder="Tenkhachhang" aria-label="Search">
+            <input class="form-control mr-sm-1" name="bienso" type="search" placeholder="Bienso" aria-label="Search">
+            <input class="form-control mr-sm-1" name="hieuxe" type="search" placeholder="hieuxe" aria-label="Search">
+            <button type="submit" class="submit mr-sm-3">Search</button>
+        </form>
+    </div>
+
+    <div class="card-content">
+        <table>
+            <thead>
+                <!-- {% for col in df.columns %}
+                <td>
+                  {{col}}
+                </td>
+                {% endfor %} -->
+
+                <tr>
+                    <!-- <th>stt</th> -->
+                    <th>Biển số</th>
+                    <th>Tên hiệu xe</th>
+                    <th>Tên khách hàng</th>
+                    <th>Tiền nợ</th>
+                    <!-- <th>Xóa</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for index, row in df.iterrows %}
+                <tr>
+                  {% for cell in row %}
+                    <td>
+                      {{cell}}
+                    </td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+
+
+{% endblock content %}

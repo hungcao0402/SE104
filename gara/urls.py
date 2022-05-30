@@ -12,7 +12,12 @@ urlpatterns = [
     #NGUYEN TRI
     # path('1', views.add_DoanhThu),
     # path('1', views.add_ct_DoanhThu),
-    path('', views.Bao_Cao_Doanh_So),
+    # ===========================================
+    # Trung Bui
+    path('',views.get_bd),
+    path('after_search', views.after_search, name = "after_search"),
+    # ===========================================
+    path('baocaodoanhso', views.Bao_Cao_Doanh_So),
     path('post_bsds',views.search_bcds, name="post_bsds"),
     path('thamso', views.regular_update, name="index"),
     path('save/',views.save_regular_update, name="save"),

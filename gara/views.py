@@ -150,8 +150,8 @@ def data_xe_hieuxe_psc():
     df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
     df = df_psc.join(df_xhx.set_index("maxe"), on = "maxe_id")
 
-    df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
-    df['ngaytiepnhan'].dt.to_period('M')
+    # df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
+    # df['ngaytiepnhan'].dt.to_period('M')
 
     df['ngaylapphieu'] = pd.to_datetime(df['ngaylapphieu'])
     df['thanglapphieu']=df['ngaylapphieu'].dt.to_period('M')
@@ -177,8 +177,8 @@ def Bao_Cao_Doanh_So(request):
     df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
     df = df_psc.join(df_xhx.set_index("maxe"), on = "maxe_id")
 
-    df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
-    df['ngaytiepnhan'].dt.to_period('M')
+    # df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
+    # df['ngaytiepnhan'].dt.to_period('M')
 
     df['ngaylapphieu'] = pd.to_datetime(df['ngaylapphieu'])
     df['thanglapphieu']=df['ngaylapphieu'].dt.to_period('M')
@@ -238,7 +238,57 @@ def search_bcds(request):
     context={"bcds":bcds, "ct_bcds":ct_bcds}
     return render(request, 'gara/bao_cao_doanh_thu.html',context)
    
-    
 
+# =========================================================
 
+def get_bd(request):
+    x = Xe.objects.all()
+    hx = HieuXe.objects.all()
+    kh = KhachHang.objects.all()
+    df_x = pd.DataFrame(x.values())
+    df_hx = pd.DataFrame(hx.values())
+    df_kh = pd.DataFrame(kh.values())
+    df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
+    data = df_xhx.join(df_kh.set_index("makhachhang"), on = "makhachhang_id")    
+    df = data[["bienso","tenhieuxe","tenkhachhang","tienno"]]
+    return render(request, 'gara/search_xe.html', {'df':df})
+
+def data_tracuuxe():
+    x = Xe.objects.all()
+    hx = HieuXe.objects.all()
+    kh = KhachHang.objects.all()
+    df_x = pd.DataFrame(x.values())
+    df_hx = pd.DataFrame(hx.values())
+    df_kh = pd.DataFrame(kh.values())
+    df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
+    data = df_xhx.join(df_kh.set_index("makhachhang"), on = "makhachhang_id")
+    return data
     
+def after_search(request):
+    
+    data = data_tracuuxe()
+    # if "tukhoa" and "bienso" and "baocao" in request.GET:
+    if  "bienso"  in request.GET:
+        kh = request.GET['khachhang']
+        bs = request.GET['bienso']
+        hx = request.GET['hieuxe']
+        print("=======: ",kh == '' , hx == '' )
+        
+        if kh == '' and hx == '':
+            a = data.loc[(data["bienso"].str.contains(bs))]
+        elif bs == '' and kh == '':
+            a = data.loc[(data["tenhieuxe"].str.contains(hx))]
+        elif bs == '' and hx == '':
+            a = data.loc[(data["tenkhachhang"].str.contains(kh))]
+        elif hx == '':
+            a = data.loc[(data["bienso"].str.contains(bs)) & (data["tenkhachhang"].str.contains(kh)) ]
+        elif bs == '':
+            a = data.loc[(data["tenhieuxe"].str.contains(hx)) & (data["tenkhachhang"].str.contains(kh)) ]
+        elif kh == '':
+            a = data.loc[(data["tenhieuxe"].str.contains(hx)) & (data["bienso"].str.contains(bs)) ]
+        else:
+            a = data.loc[(data["tenhieuxe"].str.contains(hx)) & (data["bienso"].str.contains(bs)) & (data["tenkhachhang"].str.contains(kh)) ]
+        df = a[["bienso","tenhieuxe","tenkhachhang","tienno"]]
+    else:             
+        df = data[["bienso","tenhieuxe","tenkhachhang","tienno"]]
+    return render(request, 'gara/search_xe.html', {'df':df})
