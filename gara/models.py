@@ -42,7 +42,6 @@ class KhachHang(models.Model):
     tenkhachhang=models.CharField(max_length=40)
     diachi=models.CharField(max_length=100)
     dienthoai=models.IntegerField()
-    email=models.CharField(max_length=40)
     def __str__(self):
         return self.tenkhachhang  
 class Xe(models.Model): 
@@ -50,7 +49,6 @@ class Xe(models.Model):
     bienso=models.CharField(max_length=20)
     makhachhang=models.ForeignKey(KhachHang,on_delete=models.CASCADE)
     mahieuxe=models.ForeignKey(HieuXe,on_delete=models.CASCADE)
-    ngaytiepnhan=models.DateField(auto_now_add=True)
     tienno=models.IntegerField(default=0)
     def __str__(self):
         return self.bienso

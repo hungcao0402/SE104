@@ -17,7 +17,16 @@ def tiep_nhan(request):
         enquiry=forms.TiepNhanForm(request.POST)
         if enquiry.is_valid():
             enquiry_x=enquiry.save()
-        return HttpResponseRedirect('view-request')
+            kh = KhachHang.objects.all().filter(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai)[0]
+            if not kh:
+                kh = KhachHang(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai, diachi=enquiry_x.diachi)
+                kh.save()
+            xe = Xe.objects.all().filter(bienso=enquiry_x.bienso, makhachhang=kh, mahieuxe=enquiry_x.hieuxe)
+            if not xe:
+                xe = Xe(bienso=enquiry_x.bienso, makhachhang=kh, mahieuxe=enquiry_x.hieuxe)
+                xe.save()
+
+        return HttpResponseRedirect('request')
     
     return render(request,'gara/add_request.html',{'enquiry':enquiry})
 
