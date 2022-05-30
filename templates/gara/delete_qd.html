@@ -64,7 +64,7 @@
 	<div class="col-md-6">
 			<p>Are you sure you want to delete "{{item}}"?</p>
 
-			<form action="{% url 'gara:delete_quydinh' item.MaThamSo  %}" method="POST" class="submit">
+			<form action="../../../../../{{customer.username}}/delete_quydinh/{{item.MaThamSo}}" method="POST" class="submit">
 				
 				{% csrf_token %}
 				<input type="submit" value="Delete" class="submit_update">

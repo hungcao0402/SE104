@@ -105,7 +105,7 @@
 <h1 style="text-align:center;">CẬP NHẬT QUY ĐỊNH</h1>
 
 <!-- ================ FORM CAP NHAT QUY DINH=================== -->
-<!-- <div class="form_container" >
+<div class="form_container" >
     <form action="/save"  class="form_update" method="post">
         {% csrf_token %}
         <div class="sub_element">
@@ -117,7 +117,7 @@
         </div>
         <input type="submit" class="form_submit" value="Cập nhật quy định">
     </form> 
-</div> -->
+</div>
 
 
 
@@ -139,6 +139,7 @@
                 <td> {{ i.MaThamSo }}</td>
                 <td> {{ i.TenThamSo }}</td>
                 <td> {{ i.GiaTri }}</td>
+
                 <td><a href="update_quydinh/{{i.MaThamSo}}" class="update-row submit-row">Cập nhật</a></td>
                 <!-- <td><a href="delete_quydinh/{{i.MaThamSo}}" class = "delete-row submit-row">Xóa</a></td> -->
             </tr>

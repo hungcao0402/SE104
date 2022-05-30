@@ -36,9 +36,13 @@ urlpatterns = [
     path('<username>/baocaodoanhso', views.Bao_Cao_Doanh_So),
     path('<username>/post_bsds',views.search_bcds, name="post_bsds"),
     path('<username>/thamso', views.regular_update, name="index"),
-    path('<username>/save/',views.save_regular_update, name="save"),
+    path('save',views.save_regular_update, name="save"),
     path('<username>/update_quydinh/<mts>', views.update_quydinh, name='update_quydinh'),
     path('<username>/nhap_vtpt', views.nhap_vtpt, name='nhap_vtpt'),
     path('<username>/nhap_hieuxe', views.them_hieuxe, name="nhap-hieu-xe"),
-    path('<username>/nhap_tiencong', views.them_tiencong, name="them-hieu-xe")
+    path('<username>/nhap_tiencong', views.them_tiencong, name="them-hieu-xe"),
+    path('<username>/delete_quydinh/<mts>', views.delete_quydinh),
+    # Trung Bui
+    path('<username>/get_bd',views.get_bd),
+    path('after_search', views.after_search, name = "after_search"),
 ]

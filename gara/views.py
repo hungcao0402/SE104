@@ -465,23 +465,24 @@ def update_default():
 
 def regular_update(request, username):
     # enquiries = QuyDinhHienHanh.objects.all().filter()
-    # a = CapNhatQuyDinh()
+    a = CapNhatQuyDinh()
     staff = Staff.objects.get(username=username)
     picture = '../' + staff.profile_pic.url
     if QuyDinhHienHanh.objects.all().exists() ==False:
         update_default()
     data = QuyDinhHienHanh.objects.all()
-    return render(request, 'gara/cap_nhat_quy_dinh.html',{'data':data, "customer": staff, "picture":picture})
+    return render(request, 'gara/cap_nhat_quy_dinh.html',{'fa':a, 'data':data, "customer": staff, "picture":picture})
 
 
 def save_regular_update(request):
     if request.method == 'POST':
         f = CapNhatQuyDinh(request.POST)
         # a = QuyDinhHienHanh.objects.first()
+        username = request.user.username
         if f.is_valid():
             f.save()
             print()
-            return redirect('/')
+            return HttpResponseRedirect(f'{username}/thamso')
         else:
             return HttpResponse("ko co validate")
     else:
@@ -507,13 +508,14 @@ def update_quydinh(request , mts, username):
     return render(request, 'gara/update_form_qd.html',{'form': form})
     # return render(request, 'gara/update_form.html', context)
 
-# def delete_quydinh(request, mts):
-#     quy_dinh = QuyDinhHienHanh.objects.get(MaThamSo=mts)
-#     if request.method == "POST":
-#         quy_dinh.delete()
-#         return redirect('/thamso')
-#     context = {'item': quy_dinh}
-#     return render(request, 'gara/delete_qd.html', context)
+def delete_quydinh(request, mts, username):
+    staff= Staff.objects.get(username=username)
+    quy_dinh = QuyDinhHienHanh.objects.get(MaThamSo=mts)
+    if request.method == "POST":
+        quy_dinh.delete()
+        return HttpResponseRedirect(f'../../{username}/thamso')
+    context = {'item': quy_dinh, 'customer': staff}
+    return render(request, 'gara/delete_qd.html', context)
 
 # ======================================================================
 # NGUYEN TRI
@@ -711,3 +713,56 @@ def them_tiencong(request, username):
                 messages.success(request, 'Thêm tiền công thành công')
     context={'enquiry':enquiry, 'customer':staff, 'picture':picture}
     return render(request,'bonus/themtiencong.html',context)
+
+def get_bd(request,username):
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
+    x = Xe.objects.all()
+    hx = HieuXe.objects.all()
+    kh = KhachHang.objects.all()
+    df_x = pd.DataFrame(x.values())
+    df_hx = pd.DataFrame(hx.values())
+    df_kh = pd.DataFrame(kh.values())
+    df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
+    data = df_xhx.join(df_kh.set_index("makhachhang"), on = "makhachhang_id")    
+    df = data[["bienso","tenhieuxe","tenkhachhang","tienno"]]
+    return render(request, 'gara/search_xe.html', {'df':df, 'customer':staff, 'picture':picture})
+
+def data_tracuuxe():
+    x = Xe.objects.all()
+    hx = HieuXe.objects.all()
+    kh = KhachHang.objects.all()
+    df_x = pd.DataFrame(x.values())
+    df_hx = pd.DataFrame(hx.values())
+    df_kh = pd.DataFrame(kh.values())
+    df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
+    data = df_xhx.join(df_kh.set_index("makhachhang"), on = "makhachhang_id")
+    return data
+    
+def after_search(request):
+    data = data_tracuuxe()
+    # if "tukhoa" and "bienso" and "baocao" in request.GET:
+    if  "bienso"  in request.GET:
+        kh = request.GET['khachhang']
+        bs = request.GET['bienso']
+        hx = request.GET['hieuxe']
+        print("=======: ",kh == '' , hx == '' )
+        
+        if kh == '' and hx == '':
+            a = data.loc[(data["bienso"].str.contains(bs))]
+        elif bs == '' and kh == '':
+            a = data.loc[(data["tenhieuxe"].str.contains(hx))]
+        elif bs == '' and hx == '':
+            a = data.loc[(data["tenkhachhang"].str.contains(kh))]
+        elif hx == '':
+            a = data.loc[(data["bienso"].str.contains(bs)) & (data["tenkhachhang"].str.contains(kh)) ]
+        elif bs == '':
+            a = data.loc[(data["tenhieuxe"].str.contains(hx)) & (data["tenkhachhang"].str.contains(kh)) ]
+        elif kh == '':
+            a = data.loc[(data["tenhieuxe"].str.contains(hx)) & (data["bienso"].str.contains(bs)) ]
+        else:
+            a = data.loc[(data["tenhieuxe"].str.contains(hx)) & (data["bienso"].str.contains(bs)) & (data["tenkhachhang"].str.contains(kh)) ]
+        df = a[["bienso","tenhieuxe","tenkhachhang","tienno"]]
+    else:             
+        df = data[["bienso","tenhieuxe","tenkhachhang","tienno"]]
+    return render(request, 'gara/search_xe.html', {'df':df})
