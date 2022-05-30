@@ -35,9 +35,10 @@ class PhieuSuaChua(models.Model):
     maphieusuachua=models.AutoField(primary_key=True)
     maxe=models.ForeignKey(Xe,on_delete=models.CASCADE)
     tongthanhtien=models.IntegerField(default=0)
+    tinhtrangthutien=models.IntegerField(default=0)
     ngaylapphieu=models.DateField(auto_now_add=True)   
-    def __str__(self):
-        return f"{self.maphieusuachua}"
+    def __int__(self):
+        return self.maphieusuachua
 class TienCong(models.Model):
     matiencong=models.AutoField(primary_key=True)
     loaitiencong=models.CharField(max_length=50, unique=True) 

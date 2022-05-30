@@ -14,9 +14,9 @@
   }
 
   input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
+    width: 20%;
+    background-color: #4cafaa;
+    color: rgb(41, 0, 0);
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
@@ -25,9 +25,13 @@
   }
 
   input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: #033d53;
+    padding: 14px 20px;
   }
-
+  .button2 {background-color: #008CBA;
+    padding: 14px 20px;
+  } /* Blue */
+  
 
   </style>
 
@@ -37,19 +41,19 @@
 
 
 <br><br><br><br><br>
-<h1 style="text-align:center;">NHẬP BIỂN SỐ SỮA CHỮA</h1>
+<h1 style="text-align:center;color:red;font-family:verdana">NHẬP BIỂN SỐ SỮA CHỮA</h1>
 <div>
   <form method="post" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
 
-    <label for="vehicle_no">Biển số</label>
+    <label style="font-family:verdana" >Biển số</label>
     {% render_field enquiry.bienso class="form-control" placeholder="Biển số" %}
 
     {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
     {% comment %} {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
 
 
-    <input type="submit" value="Submit">
+    <input style="color:red;font-family:verdana" type="submit" value="Submit">
   </form>
 </div>
 

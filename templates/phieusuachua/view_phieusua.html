@@ -14,9 +14,9 @@
   }
 
   input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
+    width: 20%;
+    background-color: #4cafaa;
+    color: rgb(41, 0, 0);
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
@@ -25,10 +25,13 @@
   }
 
   input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: #033d53;
+    padding: 14px 20px;
   }
-
-
+  .button2 {background-color: #008CBA;
+    padding: 14px 20px;
+  } /* Blue */
+  
   </style>
 
 
@@ -59,26 +62,31 @@
    </form>
   <form method="post" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
+      <p></p>
       <label for="vehicle_no">Loại tiền công: </label>
       {%render_field enquiry.loaitiencong%}
+      <p></p>
       <label for="vehicle_no">Nhập số lần: </label>
       {%render_field enquiry.solan%}
       <!-- <label for="vehicle_no">Tiền công: </label>
       {%render_field enquiry.tiencong%} -->
+      <p></p>
       <label for="vehicle_no">Nội dung: </label>
       {%render_field enquiry.noidung%}
     {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
     {% comment %} {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" >
     <table style="margin: top 100px;">
+      <caption>Danh sách các vật tư</caption>
         <tr>
             <th>Mã ID</th>
             <th>Số lần</th>
             <th>MÃ tiền công</th>
             <th>Tiền công</th>
             <th>Nội dung</th>
-            <th>Tổng tiền</th>
             <th>Tổng tiền vật tư</th>
+          <br>  <th>Tổng tiền</th><br>
+
           </tr>
           {% for i in data %}
             <tr>
@@ -87,18 +95,19 @@
           <th><br> {{ i.matiencong }} </br></th>
           <th><br> {{ i.tiencong }} </br></th>
           <th><br> {{ i.noidung }} </br></th>
-          <th><br> {{ i.tongtien }} </br></th>
           <th><br> {{ i.tongtienvattu }} </br></th>
+          <th><br> {{ i.tongtien }} </br></th>
+
           <th><br> 
-            <a <button> <a href=" {% url 'gara:view_ctphieusuachua' i.mact_phieusuachua  %}">Click click</a></button>
+           
+            <button>  <a  href=" {% url 'gara:view_ctphieusuachua' i.mact_phieusuachua  %}">XEM</a></button>
+            <button>  <a  href="{% url 'gara:delete_ctphieusua' i.mact_phieusuachua %}">DELETE</a></button>
           </br></th>
      </tr> {%endfor%}
     </table>
-
   </form>
 </div>
 
-
-
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 {% endblock content %}
+

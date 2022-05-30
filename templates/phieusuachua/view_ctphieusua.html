@@ -14,9 +14,9 @@
   }
 
   input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
+    width: 20%;
+    background-color: #4cafaa;
+    color: rgb(41, 0, 0);
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
@@ -25,9 +25,13 @@
   }
 
   input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: #033d53;
+    padding: 14px 20px;
   }
-
+  .button2 {background-color: #008CBA;
+    padding: 14px 20px;
+  } /* Blue */
+  
 
   </style>
 
@@ -90,22 +94,28 @@
     <table style="margin: top 200px;" border="1" >  
 
         <tr>
-            <th>Mã vật tư</th>
-            <th>Số lượng</th>
+          <th>Mã chi tiết vật tư</th>
+          <th>Mã vật tư</th>
+           <th>Số lượng</th>
             <th>Đơn giá</th>
             <th>Tổng tiền</th>
+            <th>Chức năng</th>
         </tr>
           {% for i in data %}
         <tr>
-          <th> <br>{{ i.mavattuphutung_id }} </br>  </th>
-          <th><br> {{ i.soluong}} </br></th>
-          <th><br> {{ i.dongia }} </br></th>
-          <th><br> {{ i.tongthanhtien }} </br></th>
-        </tr> 
+          <th>{{ i.mact_vattuphutung }}</th>
+          <th>{{ i.mavattuphutung_id }}  </th>
+          <th>{{ i.soluong}}</th>
+          <th> {{ i.dongia }} </th>
+          <th> {{ i.tongthanhtien }} </th>
+          <th>  <button> <a href="{% url 'gara:delete_chitietvattu' i.mact_vattuphutung ct_phieusua.mact_phieusuachua ct_phieusua.maphieusuachua_id %}">DELETE</a></button>  <th>
+         </tr> 
           {%endfor%} 
     </table>
   </form> 
-
+ <form style="margin-left:300px;margin-right:300px;text-align: center;">
+  <a href="{% url 'gara:view-phieusua' ct_phieusua.maphieusuachua_id %}">QUAY LẠI PHIẾU SỮA CHỮA</a>
+</form>
 </div>
 
 
