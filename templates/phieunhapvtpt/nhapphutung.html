@@ -1,0 +1,60 @@
+{% extends 'gara/customerbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<head>
+  <style media="screen">
+    input[type=text], select,input[type=number] , textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+
+  </style>
+
+
+</head>
+
+
+
+<br><br><br><br><br>
+<h1 style="text-align:center;">CHỌN MÃ PHỤ TÙNG</h1>
+<div>
+  <form method="post" style="margin-left:200px;margin-right:200px;">
+      {% csrf_token %}
+
+    <label for="vehicle_no">Mã - Tên Phụ Tùng</label>
+    {% render_field enquiry.mavattuphutung class="form-control" placeholder="MÃ PHỤ TÙNG" %}
+    <label for="vehicle_no">Số lượng</label>
+    {% render_field enquiry.soluong class="form-control" placeholder="Ex:1" %}
+    <label for="vehicle_no">Đơn giá</label>
+    {% render_field enquiry.dongia class="form-control" placeholder="VNĐ" %}
+    {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
+    {% comment %} {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
+
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock content %}
