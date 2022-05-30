@@ -84,6 +84,7 @@ class CT_PhieuNhapVTPT(models.Model):
     soluong=models.IntegerField()
     dongia=models.IntegerField()
 
+
 from django.db.models.functions import ExtractMonth,ExtractYear
 class BaoCaoDoanhSo(models.Model):
     mabaocaodoanhso=models.AutoField(primary_key=True)
@@ -92,22 +93,6 @@ class BaoCaoDoanhSo(models.Model):
     year = models.IntegerField(default=0)
     tongdoanhso=models.IntegerField(default=0)
 
-    # def add_DoanhThu(self):
-    #     psc_xe = PhieuSuaChua.objects.select_related("maxe__mahieuxe").all()
-    #     b = psc_xe.annotate(month=ExtractMonth('ngaylapphieu'),year =ExtractYear('ngaylapphieu')).values('month','year').annotate(Sum=Sum("tongthanhtien"))
-    #     # for i in b:
-    #     #     BaoCaoDoanhSo.objects.create(month =b[i]['month'],year =b[i]['year'], tongdoanhso=b[i]['Sum'])
-    #     month =[]
-    #     year = []
-    #     t = []
-    #     for i in range(len(b)):
-    #         month.append(b[i]['month'])
-    #         year.append(b[i]['year'])
-    #         t.append(b[i]['Sum'])
-    #     self.month=month
-    #     self.year=year
-    #     self.tongdoanhso=t
-    #     return self.month,self.year,self.tongdoanhso
 
        
 
@@ -115,31 +100,23 @@ class CT_BaoCaoDoanhSO(models.Model):
     mact_baocaodoanhso=models.AutoField(primary_key=True)
     # mabaocaodoanhso = models.ForeignKey(BaoCaoDoanhSo,on_delete=models.CASCADE)
     # mahieuxe = models.ForeignKey(HieuXe, on_delete=models.CASCADE)
+    STT = models.IntegerField(default=0)
     tenhieuxe = models.CharField(max_length=200,default="")
     luotsua = models.IntegerField(default=0)
     thanhtien = models.IntegerField(default=0)
     ti_le = models.FloatField(default=0)
     
 
- 
-    # def sum_of_doanhthu(self):
-    #     psc_xe = PhieuSuaChua.objects.select_related("maxe__mahieuxe").all()
-    #     hieuxe = HieuXe.objects.all()
-    #     psc_xe.select_related("mahieuxe")
-    #     # maxe_luotsua_thanhtien = psc_xe.values("maxe").annotate(count=Count("maxe")).annotate(Sum=Sum("tongthanhtien"))
-    #     b = psc_xe.values("maxe").annotate(count=Count("maxe")).annotate(Sum=Sum("tongthanhtien"))
-
-    #     a = hieuxe.values("tenhieuxe","hieuxe")
-    #     for i in range(len(a)):
-    #         print(a[i]['tenhieuxe'], a[i]['hieuxe'])
-    #         sum_hx = 0
-    #         count_hx = 0
-    #         for j in range(len(b)):
-    #             if a[i]['hieuxe'] == b[j]["maxe"]:
-    #                 sum_hx += b[j]["Sum"]
-    #                 count_hx += b[j]["Sum"]
-    #         CT_BaoCaoDoanhSO.objects.create(mahieuxe= a[i]['hieuxe'], luotsua=sum_hx,thanhtien=count_hx)
-
+# class Baocaodoanhso(models.Model):
+#     mact_baocaodoanhso=models.AutoField(primary_key=True)
+#     thoidiem=models.DateField(auto_now_add=True)
+#     month = models.IntegerField(default=0)
+#     year = models.IntegerField(default=0)
+#     tongdoanhso=models.IntegerField(default=0) #ti le
+#     tenhieuxe = models.CharField(max_length=200,default="")
+#     luotsua = models.IntegerField(default=0)
+#     thanhtien = models.IntegerField(default=0)
+#     ti_le = models.FloatField(default=0)
     
 
 class ThamSo(models.Model):

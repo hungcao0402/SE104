@@ -9,48 +9,94 @@
     <style>
          .form_container{
             max-width: 720px;
-            height: 200px;
+            height: 100px;
             padding: 15px;
-            margin: 15px auto 0 auto;   
+            margin: auto;   
+            display: flex;
             justify-content: center;
-            background-color: aqua;
+            /* background-color: aqua; */
+        }
+
+        .form_search{
+            width: 500px;
+            background-color: rgb(104, 195, 234);
+            border-radius: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-control{
+            /* width: 90px; */
+            min-height: 30px;
+            border-radius: 5px;
+            border: none;
+        }
+        .mr-sm-1{
+            margin-right: 10px;
+        }
+        .submit{
+            background-color: rgb(30, 173, 73);
+            color: aliceblue;
+            border: none;
+            width: 90px;
+            min-height: 30px;
+            border-radius: 5px;
+            /* margin: 15px ; */
+        }
+        .submit:hover{
+            background-color: #53e994;
+            cursor: pointer;
         }
 
         .card-content{
-            margin-right: 100px;
-            margin-left: 100px;
+            /* background-color: antiquewhite; */
+            display: flex;
+            justify-content: center;
         }
+        
+        /* ========= table=========== */
+        table {
+            border-collapse: collapse;
+            width: 75%;
+        }
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:nth-child(even) {background-color: #a5e2fd;}
+
+
 
     </style>
 </head>
 <body>
     <br><br><br><br><br>
-<h3 style="text-align:center;">Báo cáo doanh thu</h3>
+<h1 style="text-align:center;">Báo cáo doanh thu</h1>
 
 
 <div class="form_container" >
-    <form action="{% url 'gara:post_bsds'%}" >
+    <form action="{% url 'gara:post_bsds'%}" class="form_search">
         {% csrf_token %}
-        <!-- <div >
-            <input type="search" name="m" class="form-control search-slt" placeholder="Month Search">
-        </div>
-
-        <div >
-            <input type="search" name="y" class="" placeholder="Year Search">
-        </div> -->
-        <input class="form-control mr-sm-2" name="m" type="search" placeholder="Month Search" aria-label="Search">
-        <input class="form-control mr-sm-2" name="y" type="search" placeholder="Year Search" aria-label="Search">
-        <button type="submit" class="">Search</button>
+        <input class="form-control mr-sm-1" name="m" type="search" placeholder="Month Search" aria-label="Search">
+        <input class="form-control mr-sm-1" name="y" type="search" placeholder="Year Search" aria-label="Search">
+        <button type="submit" class="submit mr-sm-3">Search</button>
     </form>
 </div>
+
 
 <div class="card-content">
     <table>
         <thead>
             <tr>
-                <th>Month</th>
-                <th>Year</th>
-                <th>DoanhSo</th>
+                <th>Tháng</th>
+                <th>Năm</th>
+                <th>Doanh số</th>
             </tr>
         </thead>
         <tbody>
@@ -66,7 +112,7 @@
 </div>
 
 
-<h3 style="text-align:center;">Chi tiết báo cáo doanh thu</h3>
+<h1 style="text-align:center;">Chi tiết báo cáo doanh số</h1>
 <div class="card-content">
     <table>
         <thead>
@@ -81,7 +127,7 @@
         <tbody>
             {% for i in ct_bcds %}
             <tr>
-                <td> {{ i.mact_baocaodoanhso}}</td>
+                <td> {{ i.STT}}</td>
                 <td> {{ i.tenhieuxe }}</td>
                 <td> {{ i.luotsua }}</td>
                 <td> {{ i.thanhtien }}</td>

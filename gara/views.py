@@ -105,7 +105,7 @@ def update_quydinh(request , mts):
         form = forms.CapNhatQuyDinh(request.POST, instance= quy_dinh)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('/thamso')
     context = {'form':form}
     return render(request, 'gara/update_form_qd.html',{'form': form})
     # return render(request, 'gara/update_form.html', context)
@@ -114,7 +114,7 @@ def delete_quydinh(request, mts):
     quy_dinh = QuyDinhHienHanh.objects.get(MaThamSo=mts)
     if request.method == "POST":
         quy_dinh.delete()
-        return redirect('/')
+        return redirect('/thamso')
     context = {'item': quy_dinh}
     return render(request, 'gara/delete_qd.html', context)
 
@@ -140,23 +140,7 @@ def delete_quydinh(request, mts):
     #     CT_BaoCaoDoanhSO.objects.create(mahieuxe= a[i]['hieuxe'], luotsua=sum_hx,thanhtien=count_hx)
 #     return 0
 
-from django.db.models.functions import ExtractMonth,ExtractYear
-# def add_DoanhThu(request):
-#    psc_xe = PhieuSuaChua.objects.select_related("maxe__mahieuxe").all()
-#    b = psc_xe.annotate(month=ExtractMonth('ngaylapphieu'),year =ExtractYear('ngaylapphieu')).values('month','year').annotate(Sum=Sum("tongthanhtien"))
-#    BaoCaoDoanhSo.objects.all().delete()
-
-#    for i in range(len(b)):
-#        BaoCaoDoanhSo.objects.create(month =b[i]['month'],year =b[i]['year'], tongdoanhso=b[i]['Sum'])
-   
-#    if BaoCaoDoanhSo.objects.all().exists() ==False:
-#         return HttpResponse("update that bai")
-
-#    return HttpResponse("update thanh cong")
-
-def Bao_Cao_Doanh_So(request):
-    CT_BaoCaoDoanhSO.objects.all().delete()
-    BaoCaoDoanhSo.objects.all().delete()
+def data_xe_hieuxe_psc():
     x = Xe.objects.all()
     hx = HieuXe.objects.all()
     psc = PhieuSuaChua.objects.all()
@@ -179,9 +163,35 @@ def Bao_Cao_Doanh_So(request):
     total = df.groupby(["month","year"])['tongthanhtien'].agg(['sum','count']).reset_index()
     data = pd.merge(ct_ds,total, how="left", on=['month','year']) #col: ['month', 'year', 'tenhieuxe', 'sum', 'count_x', 'count_y'],
     data['tile']=data['count_x']/data['count_y']*100
-    tile = []
-    for tenhieuxe, luotsua, thanhtien, ti_le  in zip(data['tenhieuxe'], data['count_x'], data['sum_x'], data['tile']):
-        CT_BaoCaoDoanhSO.objects.create(tenhieuxe=tenhieuxe,luotsua=luotsua,thanhtien=thanhtien,ti_le=ti_le)
+    return data
+
+def Bao_Cao_Doanh_So(request):
+    CT_BaoCaoDoanhSO.objects.all().delete()
+    BaoCaoDoanhSo.objects.all().delete()
+    x = Xe.objects.all()
+    hx = HieuXe.objects.all()
+    psc = PhieuSuaChua.objects.all()
+    df_x = pd.DataFrame(x.values())
+    df_hx = pd.DataFrame(hx.values())
+    df_psc = pd.DataFrame(psc.values())
+    df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
+    df = df_psc.join(df_xhx.set_index("maxe"), on = "maxe_id")
+
+    df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
+    df['ngaytiepnhan'].dt.to_period('M')
+
+    df['ngaylapphieu'] = pd.to_datetime(df['ngaylapphieu'])
+    df['thanglapphieu']=df['ngaylapphieu'].dt.to_period('M')
+    df['month'] = df['ngaylapphieu'].dt.month
+    df['year'] = df['ngaylapphieu'].dt.year
+
+    ct_ds = df.groupby(["month","year","tenhieuxe"])['tongthanhtien'].agg(['sum','count']).reset_index()
+    total = df.groupby(["month","year"])['tongthanhtien'].agg(['sum','count']).reset_index()
+    data = pd.merge(ct_ds,total, how="left", on=['month','year']) #col: ['month', 'year', 'tenhieuxe', 'sum', 'count_x', 'count_y'],
+    data['tile']=data['count_x']/data['count_y']*100
+    # data= data_xe_hieuxe_psc()
+    for tenhieuxe, luotsua, thanhtien, ti_le, stt  in zip(data['tenhieuxe'], data['count_x'], data['sum_x'], data['tile'], data.index):
+        CT_BaoCaoDoanhSO.objects.create(tenhieuxe=tenhieuxe,luotsua=luotsua,thanhtien=thanhtien,ti_le=ti_le,STT = stt)
 
     # ===============================================================
     for month, year, tongdoanhso in zip(total['month'],total['year'],total['sum']):
@@ -193,33 +203,39 @@ def Bao_Cao_Doanh_So(request):
     if CT_BaoCaoDoanhSO.objects.all().exists() ==False:
         return HttpResponse("update that bai")
 
-    index = data.index
     bcds = BaoCaoDoanhSo.objects.all()
     ct_bcds = CT_BaoCaoDoanhSO.objects.all()
-    context={"bcds":bcds,"ct_bcds":ct_bcds,"index":index}
-
+    context={"bcds":bcds,"ct_bcds":ct_bcds}
     return render(request, 'gara/bao_cao_doanh_thu.html',context)
 
-# def get_bcds(request):
-#     #Bao_Cao_Doanh_So
-#     bcds = BaoCaoDoanhSo.objects.all()
-#     ct_bcds = CT_BaoCaoDoanhSO.objects.all()
-#     context={"bcds":bcds,"ct_bcds":ct_bcds}
-#     return render(request, 'gara/bao_cao_doanh_thu.html',context)
-        
+            
+
 def search_bcds(request):
-    if request.GET:
+    if 'm'and'y' in request.GET:
         m = request.GET['m']
         y = request.GET['y']
-        bcds = BaoCaoDoanhSo.objects.filter(month = m, year = y)
-        print("month: ",m)
-        print("year: ",y)
+        data = data_xe_hieuxe_psc()
+        try:
+            bcds = BaoCaoDoanhSo.objects.filter(month = m, year = y)
+            search_ct_bcds = data.loc[(data['month']==int(m)) & (data['year']==int(y))]  
+        except:
+            try:
+                if y=='':
+                    bcds = BaoCaoDoanhSo.objects.filter(month = m)
+                    search_ct_bcds = data.loc[(data['month']==int(m))]
+                if m=='':
+                    bcds = BaoCaoDoanhSo.objects.filter(year = y)
+                    search_ct_bcds = data.loc[(data['year']==int(y))]
+            except:
+                bcds = BaoCaoDoanhSo.objects.all()
+                search_ct_bcds = data
+        
+        b = search_ct_bcds.index
+        ct_bcds = CT_BaoCaoDoanhSO.objects.filter(STT__in = list(b)) 
     else:
         bcds = BaoCaoDoanhSo.objects.all()
-
-
-    # print(request.GET)
-    context={"bcds":bcds}
+    
+    context={"bcds":bcds, "ct_bcds":ct_bcds}
     return render(request, 'gara/bao_cao_doanh_thu.html',context)
    
     
