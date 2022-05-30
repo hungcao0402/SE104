@@ -1,0 +1,76 @@
+{% extends 'gara/customerbase.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+	<style>
+		.row{
+			height: 600px;
+			min-width: 400px;
+			/* background-color: aqua; */
+			padding: 100px;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.col-md-6{
+			/* background-color: rgb(218, 218, 116); */
+			background-color: rgb(104, 195, 234);
+			border-radius: 10px;
+			width: 400px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+		
+		.submit{
+			/* width: 200px; */
+			margin: 20px;
+			display: flex;
+			padding: 12px 20px;
+			justify-content: space-around;
+			/* background-color: bisque; */
+		}
+
+		.submit_update{
+			background-color: rgb(205, 86, 53);
+			width: 90px;
+			height: 30px;
+			border: none;
+			color: white;
+			cursor:pointer;
+		}
+
+		.cancel{
+			background-color: rgb(30, 173, 73);
+			width: 90px;
+			height: 30px;
+			border: none;
+			text-align: center;
+			padding: 5px;
+			color: white;
+			cursor:pointer;
+			text-decoration: none
+		}
+	</style>
+</head>
+
+<body>
+	
+</body>
+
+<br>
+<div class="row">
+	<div class="col-md-6">
+			<p>Are you sure you want to delete "{{item}}"?</p>
+
+			<form action="{% url 'gara:delete_quydinh' item.MaThamSo  %}" method="POST" class="submit">
+				
+				{% csrf_token %}
+				<input type="submit" value="Delete" class="submit_update">
+				<a class="cancel" href="/">Cancel</a>
+			</form>
+	</div>
+</div>
+
+{% endblock %}
