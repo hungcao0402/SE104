@@ -72,12 +72,12 @@
     <br><br><br><br><br>
 <h1 style="text-align:center;">Tra cứu xe</h1>
     <div class="form_container" >
-        <form action="{{customer.username}}/after-search" class="form_search">
+        <form action="/{{customer.username}}/after_search" class="form_search">
             {% csrf_token %}
             <input class="form-control mr-sm-1" name="khachhang" type="search" placeholder="Tenkhachhang" aria-label="Search">
             <input class="form-control mr-sm-1" name="bienso" type="search" placeholder="Bienso" aria-label="Search">
             <input class="form-control mr-sm-1" name="hieuxe" type="search" placeholder="hieuxe" aria-label="Search">
-            <button type="submit" class="submit mr-sm-3">Search</button>
+            <button type="submit" class="submit mr-sm-3">Tìm kiếm</button>
         </form>
     </div>
 
