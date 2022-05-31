@@ -323,6 +323,11 @@ def delete_chitietvattu(request,mact_vattuphutung,mact_phieusuachua,maphieusuach
     tienno_xe=xe_x.tienno-tien_1vattu
     xe_x.tienno=tienno_xe
     xe_x.save()
+    #cap nhat lai so luong
+    vattu_x=VatTuPhuTung.objects.get(mavattuphutung=ctvt.mavattuphutung_id)
+    soluongcapnhat=vattu_x.soluong+ctvt.soluong
+    vattu_x.soluong=soluongcapnhat
+    vattu_x.save()
     ctphieusua.save()
     phieusua_x.save()
     ctvt.delete()
