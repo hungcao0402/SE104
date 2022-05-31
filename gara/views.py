@@ -556,8 +556,8 @@ def data_xe_hieuxe_psc():
     df_xhx = df_x.join(df_hx.set_index("mahieuxe"), on = "mahieuxe_id")
     df = df_psc.join(df_xhx.set_index("maxe"), on = "maxe_id")
 
-    df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
-    df['ngaytiepnhan'].dt.to_period('M')
+    # df['ngaytiepnhan'] = pd.to_datetime(df['ngaytiepnhan'])
+    # df['ngaytiepnhan'].dt.to_period('M')
 
     df['ngaylapphieu'] = pd.to_datetime(df['ngaylapphieu'])
     df['thanglapphieu']=df['ngaylapphieu'].dt.to_period('M')
@@ -644,7 +644,7 @@ def search_bcds(request, username):
         ct_bcds = CT_BaoCaoDoanhSO.objects.filter(STT__in = list(b)) 
     else:
         bcds = BaoCaoDoanhSo.objects.all()
-    
+        ct_bcds = CT_BaoCaoDoanhSO.objects.all()
     context={"bcds":bcds, "ct_bcds":ct_bcds, "customer": staff, "picture":picture}
     return render(request, 'gara/bao_cao_doanh_thu.html',context)
 
