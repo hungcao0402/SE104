@@ -42,5 +42,5 @@ urlpatterns = [
     path('<username>/nhap_tiencong', views.them_tiencong, name="them-hieu-xe"),
     path('<username>/delete_quydinh/<mts>', views.delete_quydinh),
     path('<username>/get_bd',views.get_bd),
-    path('after_search', views.after_search, name = "after_search"),
+    path('<username>/after_search', views.after_search, name = "after_search"),
 ]

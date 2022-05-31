@@ -260,7 +260,7 @@ def view_ctphieusuachua(request,mact_phieusuachua, username):
             else:
                 #Tự động nhân đơn giá vật tư
                 print('soluong du')
-                dongia_ban=int(vattu_x.dongia*1.05)
+                dongia_ban= vattu_x.dongia*(QuyDinhHienHanh.objects.get(TenThamSo='Ti le don gia vtpt').GiaTri/100)
                 #end
                 tien1_ctvattu=dongia_ban*nhap_ctvtpt.cleaned_data['soluong']
                 CT_VatTuPhuTung.objects.create(mact_phieusuachua_id=mact_phieusuachua,
@@ -336,7 +336,7 @@ def tiep_nhan(request, username):
     picture = '../' + staff.profile_pic.url
     enquiry=TiepNhanForm()
     count = PhieuTiepNhan.objects.filter(date=date.today()).count()
-    if count > QuyDinhHienHanh.objects.get(TenThamSo='So xe sua chua toi da').GiaTri: ##Cần sửa với tham số
+    if count > QuyDinhHienHanh.objects.get(TenThamSo='So xe sua chua toi da').GiaTri:
         enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
         messages.warning(request, 'Đã quá hạn số lượng tiếp nhận trong ngày')
         return HttpResponseRedirect('request')
@@ -721,8 +721,10 @@ def data_tracuuxe():
     data = df_xhx.join(df_kh.set_index("makhachhang"), on = "makhachhang_id")
     return data
     
-def after_search(request):
+def after_search(request, username):
     data = data_tracuuxe()
+    staff = Staff.objects.get(username=username)
+    picture = '../' + staff.profile_pic.url
     # if "tukhoa" and "bienso" and "baocao" in request.GET:
     if  "bienso"  in request.GET:
         kh = request.GET['khachhang']
@@ -747,4 +749,4 @@ def after_search(request):
         df = a[["bienso","tenhieuxe","tenkhachhang","tienno"]]
     else:             
         df = data[["bienso","tenhieuxe","tenkhachhang","tienno"]]
-    return render(request, 'gara/search_xe.html', {'df':df})
+    return render(request, 'gara/search_xe.html', {'df':df, 'customer':staff, 'picture':picture})

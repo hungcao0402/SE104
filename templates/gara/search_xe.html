@@ -72,7 +72,7 @@
     <br><br><br><br><br>
 <h1 style="text-align:center;">Tra cứu xe</h1>
     <div class="form_container" >
-        <form action="{% url 'gara:after_search'%}" class="form_search">
+        <form action="{{customer.username}}/after-search" class="form_search">
             {% csrf_token %}
             <input class="form-control mr-sm-1" name="khachhang" type="search" placeholder="Tenkhachhang" aria-label="Search">
             <input class="form-control mr-sm-1" name="bienso" type="search" placeholder="Bienso" aria-label="Search">
