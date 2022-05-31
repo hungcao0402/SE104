@@ -116,6 +116,7 @@ def customer_login_view(request):
         else:
             messages.warning(request, 'Đăng nhập thất bại! Kiểm tra thông tin của bạn và đăng nhập lại')
     context = {'form': form}
+    
     return render(request, 'profile/customerlogin.html', context)
 
 @login_required(login_url='/login')

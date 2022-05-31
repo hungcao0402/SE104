@@ -7,7 +7,7 @@ from django.contrib import admin
 app_name='gara'
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.customer_login_view, name='login'),
     path('admin', admin.site.urls),
     path('add-request', views.tiep_nhan,name='add-request'),
     path('view-request',views.view_request,name='view-request'),

@@ -70,8 +70,8 @@ color: aquamarine;
                             {%if customer.is_admin %} Admin {% else %} Staff {% endif %} 
                           </p>
                           <p class="text-muted font-size-sm">Username: {{customer.username}}</p>
-                          <a href="/edit-profile/{{customer.username}}">Edit Profile</a>
-                          <a href="../edit-account/{{customer.username}}">Change Account</a>
+                          <a href="/edit-profile/{{customer.username}}">Chỉnh sửa thông tin</a>
+                          <a href="../edit-account/{{customer.username}}">Đổi mật khẩu</a>
                         </div>
                       </div>
                     </div>
@@ -82,46 +82,46 @@ color: aquamarine;
                     <div class="card-body">
                       <div class="row">
                         <div class="col-sm-3">
-                          <h6 class="mb-0">First Name</h6>
+                          <h4 class="mb-0">Họ</h4>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          {{ customer.firstname }}
+                          <h4>{{ customer.firstname }}</h4>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
-                          <h6 class="mb-0">Last Name</h6>
+                          <h4 class="mb-0">Tên</h4>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          {{ customer.lastname }}
+                          <h4>{{ customer.lastname }}</h4>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
-                          <h6 class="mb-0">Phone</h6>
+                          <h4 class="mb-0">Số điện thoại</h4>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          {{customer.mobile}}
+                          <h4>{{customer.mobile}}</h4>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
-                          <h6 class="mb-0">Emails</h6>
+                          <h4 class="mb-0">Email</h4>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          {{customer.emails}}
+                          <h4>{{customer.emails}}</h4>
                         </div>
                       </div>
                       <hr>
                       <div class="row">
                         <div class="col-sm-3">
-                          <h6 class="mb-0">Address</h6>
+                          <h4 class="mb-0">Địa chỉ</h4>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          {{customer.address}}
+                          <h4>{{customer.address}}</h4>
                         </div>
                       </div>
                       <hr>

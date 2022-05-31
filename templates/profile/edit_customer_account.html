@@ -35,13 +35,13 @@
 </head>
 
 <br><br><br><br><br>
-<h1 style="text-align:center;color:blue;">Edit Your Profile</h1>
+<h1 style="text-align:center;color:blue;">Đổi mật khẩu</h1>
 <div>
   <form method="post"  enctype="multipart/form-data" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
-        <label for="username">Username</label>
+        <label for="username">Tài khoản</label>
           {% render_field userForm.username class="form-control" placeholder="Username"%}
-        <label for="password">Password</label>
+        <label for="password">Mật khẩu</label>
           {% render_field userForm.password class="form-control" placeholder="Password" type="password"%}
 
     <input type="submit" value="Edit Your Profile">

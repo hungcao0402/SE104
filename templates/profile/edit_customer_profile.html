@@ -39,22 +39,22 @@
 <div>
   <form method="post"  enctype="multipart/form-data" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
-        <label for="firstname">First Name</label>
+        <label for="firstname">Họ</label>
           {% render_field customerForm.firstname class="form-control" placeholder="First Name"%}
-        <label for="lastname">Last Name</label>
+        <label for="lastname">Tên</label>
           {% render_field customerForm.lastname class="form-control" placeholder="Last Name"%}
-        <label for="mobile">Mobile</label>
+        <label for="mobile">Số điện thoại</label>
           {% render_field customerForm.mobile class="form-control" placeholder="Mobile"%}
-        <label for="address">Address</label>
+        <label for="address">Địa chỉ</label>
           {% render_field customerForm.address class="form-control" placeholder="Address"%}
         <!-- <label for="username">Username</label>
           {% render_field customerForm.username class="form-control" placeholder="Username"%} -->
         <label for="password">Emails</label>
           {% render_field customerForm.emails class="form-control" placeholder="Emails"%}
-        <label for="profile_pic">Profile Picture</label>
+        <label for="profile_pic">Ảnh</label>
           {% render_field customerForm.profile_pic class="form-control" placeholder="Profile Picture"%}
           <!-- {{customerForm.as_table}} -->
-    <input type="submit" value="Edit Your Profile">
+    <input type="submit" value="Chỉnh sửa">
   </form>
 </div>
 
