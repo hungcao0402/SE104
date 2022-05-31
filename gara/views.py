@@ -381,7 +381,7 @@ def view_baocaoton(request, username):
         except:
             return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
         if BCT: 
-            enquiry = ct_baocaoton.objects.all().filter(MaBCT=BCT[0].MaBCT).order_by('-MaVTPT_id').reverse()
+            enquiry = ct_baocaoton.objects.all().filter(MaBCT=BCT[len(BCT)-1].MaBCT).order_by('-MaVTPT_id').reverse()
             return render(request, 'gara/baocaoton.html',  {'enquiries': enquiry, 'month': month, 'customer':staff, "picture": picture})
         else:
             return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
@@ -689,7 +689,7 @@ def them_hieuxe(request, username):
             tenhieuxe=request.POST['tenhieuxe']
             soluonghieuxe=HieuXe.objects.all().count()
             print('soluonghieuxe la', soluonghieuxe)
-            max=QuyDinhHienHanh.objects.get(TenThamSo='So hieu xe')
+            max=QuyDinhHienHanh.objects.get(TenThamSo='So hieu xe').GiaTri
             if soluonghieuxe>max:
                 messages.warning(request,f'so luong hieu xe qua {max}')
                 return HttpResponseRedirect('nhap_hieuxe')
