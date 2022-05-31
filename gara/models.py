@@ -82,15 +82,10 @@ class CT_VatTuPhuTung(models.Model):
     tongthanhtien=models.FloatField()
 class PhieuNhapVTPT(models.Model):
     maphieunhapvtpt=models.AutoField(primary_key=True)
-    tongtien=models.FloatField(default=0)
-    thoidiem=models.DateField(auto_now_add=True)
-class CT_PhieuNhapVTPT(models.Model):
-    mact_phieunhapvtpt=models.AutoField(primary_key=True)
-    mavattuphutung=models.ForeignKey(VatTuPhuTung,on_delete=models.CASCADE)
-    maphieunhapvtpt=models.ForeignKey(PhieuNhapVTPT,on_delete=models.CASCADE)
-    soluong=models.PositiveIntegerField()
-    dongia=models.FloatField()
-
+    mavattuphutung=models.ForeignKey(VatTuPhuTung,on_delete=models.CASCADE,null=True)
+    soluong=models.PositiveIntegerField(default=0)
+    dongia=models.PositiveIntegerField(default=0)
+    date=models.DateField(auto_now_add=True,null=True)
 # class BaoCaoDoanhSo(models.Model):
 #     mabaocaodoanhso=models.AutoField(primary_key=True)
 #     thoidiem=models.DateField(auto_now_add=True)

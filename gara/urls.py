@@ -28,6 +28,7 @@ urlpatterns = [
     path('<username>/delete_ctphieusua/<int:mact_phieusuachua>',views.delete_ctphieusua,name='delete_ctphieusua'),
     path('<username>/delete_chitietvattu/<int:mact_vattuphutung>/<int:mact_phieusuachua>/<int:maphieusuachua>',views.delete_chitietvattu,name='delete_chitietvattu'),
     path('<username>/add_request', views.tiep_nhan,name='add-request'),
+    path('<username>/update_request/<pk>',views.update_request,name='update_request'),    
     path('<username>/request',views.view_request,name='view-request'),
     path('<username>/view_baocaoton', views.view_baocaoton),
     path('<username>/baocaoton', views.baocaoton_luachon),

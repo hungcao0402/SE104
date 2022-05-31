@@ -1,0 +1,71 @@
+{% extends 'gara/customerbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<head>
+  <style media="screen">
+    input[type=text], select,input[type=number] , textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+
+  </style>
+
+
+</head>
+
+
+
+<br><br><br><br><br>
+<h1 style="text-align:center;">PHIẾU TIẾP NHẬN</h1>
+<div>
+  <form method="post" style="margin-left:200px;margin-right:200px;">
+      {% csrf_token %}
+    <label for="category">Tên chủ xe</label>
+    {% render_field enquiry.tenchuxe class="form-control" value=ptn.tenchuxe %}<br>
+
+    <label for="vehicle_no">Biển số</label>
+    {% render_field enquiry.bienso class="form-control" value=ptn.bienso %}
+
+    <label for="vehicle_name">Hiệu xe</label>
+ 
+    {% render_field enquiry.hieuxe class="form-control form-control-sm"  placeholder=ptn.hieuxe %}
+
+    <label for="vehicle_brand">Điện thoại</label>
+    {% render_field enquiry.dienthoai class="form-control" value=ptn.dienthoai  %}
+
+    <label for="vehicle_model">Địa chỉ</label>
+    {% render_field enquiry.diachi class="form-control" value=ptn.diachi %}
+
+    {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
+    {% comment %} {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
+
+
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock content %}

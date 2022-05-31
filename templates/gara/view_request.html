@@ -92,7 +92,7 @@
 				<div class="card">
 					<div class="card-header">
 										  
-						<h2 style="color:red; text-align:center" >Danh sách xe đã tiếp nhận trong ngày</h2>
+						<h2 style="color:red; text-align:center" >Danh sách xe đã tiếp nhận</h2>
 						
 
 					</div>
@@ -106,6 +106,7 @@
 								<th>Điện thoại</th>
 								<th>Địa chỉ</th>
 								<th>Ngày tiếp nhận</th>
+                <th>Sửa</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -117,7 +118,7 @@
                   <td>{{enq.dienthoai}}</td>
                   <td>{{enq.diachi}}</td>
                   <td>{{enq.date}}</td>
-                  {% comment %} <td><a style="color:blue; text-decoration:none;font-size:25px;"href="{% url 'customer-delete-request' enq.id  %}">&#10008;</a></td> {% endcomment %}
+                  <td><a  style="color:red; text-decoration:none;font-size:25px;" href="{% url 'gara:update_request' username=customer.username pk=enq.maphieutiepnhan %}">&#9998;</a></td>
                 </tr>
                 {% endfor %}
 

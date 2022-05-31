@@ -387,11 +387,39 @@ def view_baocaoton(request, username):
             return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
 
     return render(request,'gara/date_to_report.html',{'form':form, 'customer':staff, "picture": picture})
+@login_required(login_url="/login")
+def update_request(request , username, pk):
+    
+    staff = Staff.objects.get(username=username)
+    
+    picture = '../' + staff.profile_pic.url
+    ptn = PhieuTiepNhan.objects.get(maphieutiepnhan=pk)
+    enquiry=TiepNhanForm()
+
+    if request.method=='POST':
+        enquiry=TiepNhanForm(request.POST)
+        if enquiry.is_valid():
+            enquiry_x=enquiry.save()
+            try:
+                kh = KhachHang.objects.all().filter(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai)[0]
+            except:
+                kh = False
+            if not kh:
+                kh = KhachHang(tenkhachhang=enquiry_x.tenchuxe, dienthoai=enquiry_x.dienthoai, diachi=enquiry_x.diachi)
+                kh.save()
+            xe = Xe.objects.all().filter(bienso=enquiry_x.bienso, makhachhang=kh, mahieuxe=enquiry_x.hieuxe)
+            if not xe:
+                xe = Xe(bienso=enquiry_x.bienso, makhachhang=kh, mahieuxe=enquiry_x.hieuxe)
+                xe.save()
+
+        return HttpResponseRedirect('request')
+    return render(request,'gara/update_request.html',{'ptn':ptn,'enquiry':enquiry, 'customer': staff, "picture": picture})
 
 @login_required(login_url="/login")
 def save_baocaoton(request, username):
     now = date.today()
-    bct_before = BaoCaoTon.objects.filter(date__year=now.year, date__month=now.month-1)
+    bct_before = BaoCaoTon.objects.filter(date__year=now.year, 
+                    date__month=now.month-1)
     staff = Staff.objects.get(username=username)
     picture = '../' + staff.profile_pic.url
     BCT = BaoCaoTon(date=date)
@@ -402,18 +430,23 @@ def save_baocaoton(request, username):
         
         for item in vtpt:
             toncuoi = item.soluong
+            
             try:
-                phatsinh = nhapvattuphutung.objects.filter(date__year=now.year, date__month=now.month, mavattuphutrung=item.mavattuphutung)[0].soluong
+                phatsinh = PhieuNhapVTPT.objects.get(date__year=now.year, date__month=now.month,mavattuphutung=item).soluong
+
             except:
                 phatsinh = 0
-            tondau = bct_before.objects.all().filter(MaVTPT=item.mavattuphutung)[0].TonCuoi
+            try:
+                tondau = bct_before.objects.all().filter(MaVTPT=item.mavattuphutung)[0].TonCuoi
+            except:
+                tondau=0
             tempt = ct_baocaoton(MaBCT=BCT, MaVTPT=item, TonDau=tondau, TonCuoi=toncuoi, PhatSinh=phatsinh)
             tempt.save()
     else:
         for item in vtpt:
             toncuoi = item.soluong
             try:
-                phatsinh = nhapvattuphutung.objects.filter(date__year=now.year, date__month=now.month, mavattuphutrung=item.mavattuphutung)[0].soluong
+                phatsinh = PhieuNhapVTPT.objects.get(date__year=now.year, date__month=now.month,mavattuphutung=item).soluong
             except:
                 phatsinh = 0
             tondau = 0
@@ -621,7 +654,6 @@ def nhap_vtpt(request, username):
     enquiry=NhapCTVatTuPhuTung()
     if request.method=='POST':
         enquiry=NhapCTVatTuPhuTung(request.POST)
-        
         if enquiry.is_valid():
             try:
                 vtpt = VatTuPhuTung.objects.get(tenvattuphutung=request.POST['tenvattuphutung'])
@@ -639,6 +671,8 @@ def nhap_vtpt(request, username):
                     messages.success(request, 'Nhập thành công')
                 else:
                     return HttpResponse('Quá số lượng tối đa vật tư phụ tùng')
+            phieu = PhieuNhapVTPT(mavattuphutung=vtpt,soluong=vtpt.soluong,dongia=vtpt.dongia)
+            phieu.save()
             return HttpResponseRedirect('nhap_vtpt')
     
     return render(request,'phieunhapvtpt/nhapphutung.html',{'enquiry':enquiry, 'customer':staff, 'picture':picture})
