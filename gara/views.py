@@ -144,7 +144,7 @@ def edit_customer_account_view(request, username):
     mydict = {'userForm':StaffUpdate_Account, 'picture':picture}
     return render(request,'profile/edit_customer_account.html', mydict)
 
-# Phan cua Ngo Duc Vu - 20520950
+#------------------------------------------------------------------------------
 @login_required(login_url='/login')
 def nhapbienso_phieuthu(request, username):
     enquiry= NhapBienSoThu()
@@ -328,7 +328,7 @@ def delete_chitietvattu(request,mact_vattuphutung,mact_phieusuachua,maphieusuach
     ctvt.delete()
     return redirect(f'/../../{username}/view_ctphieusua/{ctphieusua.mact_phieusuachua}')
 
-# Phan nay cua Cao Van Hung 
+#------------------------------------------------------------------------------------------------------------------------
 
 @login_required(login_url="/login")
 def tiep_nhan(request, username):
@@ -391,8 +391,7 @@ def view_baocaoton(request, username):
 @login_required(login_url="/login")
 def save_baocaoton(request, username):
     now = date.today()
-    bct_before = BaoCaoTon.objects.filter(date__year=now.year, 
-                    date__month=now.month-1)
+    bct_before = BaoCaoTon.objects.filter(date__year=now.year, date__month=now.month-1)
     staff = Staff.objects.get(username=username)
     picture = '../' + staff.profile_pic.url
     BCT = BaoCaoTon(date=date)
@@ -431,12 +430,7 @@ def baocaoton_luachon(request, username):
     context = {'customer': staff, "picture": picture}
     return render(request, 'gara/baocaoton_luachon.html', context)
 
-#Phan cua Nguyen Minh Tri
-
-
-# ======================================================================
-# NGUYEN TRI
-# QUY DINH
+#-----------------------------------------------------------------------------------------------------------------------------
 
 def update_default():
     QuyDinhHienHanh.objects.create(TenThamSo="So hieu xe", GiaTri = 0)
@@ -499,9 +493,7 @@ def delete_quydinh(request, mts, username):
     context = {'item': quy_dinh, 'customer': staff}
     return render(request, 'gara/delete_qd.html', context)
 
-# ======================================================================
-# NGUYEN TRI
-# DOANH SO
+#----------------------------------------------------------------------------------------------------------------------------------
 
 def add_ctBaoCaoDoanhSO(request):
     psc_xe = PhieuSuaChua.objects.select_related("maxe__mahieuxe").all()
@@ -623,7 +615,6 @@ def search_bcds(request, username):
     context={"bcds":bcds, "ct_bcds":ct_bcds, "customer": staff, "picture":picture}
     return render(request, 'gara/bao_cao_doanh_thu.html',context)
 
-# Phan cua Bui Nguyen Anh Trung
 def nhap_vtpt(request, username):
     staff = Staff.objects.get(username=username)
     picture = '../' + staff.profile_pic.url
@@ -664,8 +655,9 @@ def them_hieuxe(request, username):
             tenhieuxe=request.POST['tenhieuxe']
             soluonghieuxe=HieuXe.objects.all().count()
             print('soluonghieuxe la', soluonghieuxe)
-            if soluonghieuxe>200:   #Sửa với tham số
-                messages.warning(request,'so luong hieu xe qua 200')
+            max=QuyDinhHienHanh.objects.get(TenThamSo='So hieu xe')
+            if soluonghieuxe>max:
+                messages.warning(request,f'so luong hieu xe qua {max}')
                 return HttpResponseRedirect('nhap_hieuxe')
             else:    
                 HieuXe.objects.create(tenhieuxe=tenhieuxe)
@@ -675,7 +667,6 @@ def them_hieuxe(request, username):
     return render(request,'bonus/themhieuxe.html',context)
 
 def them_tiencong(request, username):
-# Sửa loai tien thành unique =true
     print('Hello')
     enquiry=ThemTienCong
     staff = Staff.objects.get(username=username)
@@ -688,8 +679,9 @@ def them_tiencong(request, username):
             loaitiencong=request.POST['loaitiencong']
             soluongtiencong=TienCong.objects.all().count()
             print('soluongtiencong la', soluongtiencong)
-            if soluongtiencong>200:   #Sửa với tham số
-                messages.warning(request,'số lượng không được vượt quá 100')
+            max = QuyDinhHienHanh.objects.get(TenThamSo='So loai tien cong').GiaTri
+            if soluongtiencong>QuyDinhHienHanh.objects.get(TenThamSo='So loai tien cong').GiaTri:
+                messages.warning(request,f'số lượng không được vượt quá {max}')
             else:    
                 TienCong.objects.create(loaitiencong=loaitiencong,tiencong=request.POST['tiencong'])
                 messages.success(request, 'Thêm tiền công thành công')
