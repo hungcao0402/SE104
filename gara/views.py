@@ -12,33 +12,12 @@ from imp import C_BUILTIN
 from django.db.models import Sum, Count
 import pandas as pd
 
-# @login_required(login_url='/view-request')
-# def tiep_nhan(request):
-#     enquiry=TiepNhanForm()
-#     count = PhieuTiepNhan.objects.filter(date=date.today()).count()
-#     print(1)
-#     if count > QuyDinhHienHanh.objects.get(tenthamso='So xe sua chua toi da').giatri():
-#         enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
-
-#         return render(request, 'gara/customerbase.html', {'enquiries': enquiries})
-
-#     if request.method=='POST':
-#         enquiry=TiepNhanForm(request.POST)
-#         if enquiry.is_valid():
-#             enquiry_x=enquiry.save()
-#         return render(request, 'gara/customerbase.html', {'enquiries': enquiries})
-    
-#     return render(request,'gara/customerbase.html',{'enquiry':enquiry})
-
-# def view_request(request):
-#     enquiries=PhieuTiepNhan.objects.all().filter(date=date.today())
-#     return render(request,'gara/customerbase.html', {'enquiries': enquiries})
-
 def logout(request):
     return render(request,'gara/logout.html',{})
 
 def home(request):
     return render(request, 'gara/home.html',{})
+
 def is_staff(user):
     return user.groups.filter(name='STAFF').exists()
 
@@ -59,7 +38,6 @@ def createStaffAccount(request):
             password = request.POST['password']
             lastname = request.POST['lastname']
             firstname = request.POST['firstname']
-            password = request.POST['password']
             mobile = request.POST['mobile']
             emails = request.POST['emails']
             profile_pic = request.FILES['profile_pic']
@@ -79,33 +57,12 @@ def createStaffAccount(request):
     context = {'userForm': form, 'username':request.user.username}
     return render(request, 'profile/create_new_staff.html', context)
 
-
-@login_required(login_url='/login')
-def profile(request, username):
-    try:
-        cus = Staff.objects.get(username=username)
-        profile_pic = '../' + cus.profile_pic.url
-        print(profile_pic)
-    except:
-        password = request.user.password
-        cus = Staff.objects.create(username=username, password=password)
-        cus.is_admin = True
-        profile_pic = "../static/profile_pic/CustomerProfilePic/images.jpg"
-        cus.profile_pic = profile_pic
-        user = User.objects.get(username=username, password=password)
-        user.save()
-        my_customer_group = Group.objects.get_or_create(name='ADMIN')
-        my_customer_group[0].user_set.add(user)
-        cus.save()
-
-    context = {'customer': cus, 'username': username, 'picture': profile_pic}
-    return render(request,'profile/Profile.html', context)
-
 def customer_login_view(request):
     form = AuthenticationForm()
     if request.method== 'POST':
         username = request.POST['username']
         password = request.POST['password']
+        request.session['rawpassword'] = password
         print(f'username {username} password {password}')
         print(form.is_valid())
         user = authenticate(request, username=username, password=password)
@@ -118,6 +75,30 @@ def customer_login_view(request):
     context = {'form': form}
     
     return render(request, 'profile/customerlogin.html', context)
+
+@login_required(login_url='/login')
+def profile(request, username):
+    try:
+        cus = Staff.objects.get(username=username)
+        profile_pic = '../' + cus.profile_pic.url
+        print(profile_pic)
+    except:
+        rawpassword = request.session.get('rawpassword')
+        password = request.user.password
+        cus = Staff.objects.create(username=username, password=rawpassword)
+        cus.is_admin = True
+        profile_pic = "../static/profile_pic/CustomerProfilePic/images.jpg"
+        cus.profile_pic = profile_pic
+        user = User.objects.get(username=username, password=password)
+        user.save()
+        my_customer_group = Group.objects.get_or_create(name='ADMIN')
+        my_customer_group[0].user_set.add(user)
+        cus.save()
+
+    context = {'customer': cus, 'username': username, 'picture': profile_pic}
+    return render(request,'profile/Profile.html', context)
+
+
 
 @login_required(login_url='/login')
 def customer_dashboard_view(request, username):
@@ -401,11 +382,11 @@ def view_baocaoton(request, username):
             return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
         if BCT: 
             enquiry = ct_baocaoton.objects.all().filter(MaBCT=BCT[0].MaBCT).order_by('-MaVTPT_id').reverse()
-            return render(request, 'gara/baocaoton.html',  {'enquiries': enquiry, 'month': month})
+            return render(request, 'gara/baocaoton.html',  {'enquiries': enquiry, 'month': month, 'customer':staff, "picture": picture})
         else:
             return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
 
-    return render(request,'gara/date_to_report.html',{'form':form, 'customer': staff, "picture": picture})
+    return render(request,'gara/date_to_report.html',{'form':form, 'customer':staff, "picture": picture})
 
 @login_required(login_url="/login")
 def save_baocaoton(request, username):

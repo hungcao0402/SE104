@@ -32,7 +32,6 @@ urlpatterns = [
     path('<username>/view_baocaoton', views.view_baocaoton),
     path('<username>/baocaoton', views.baocaoton_luachon),
     path('<username>/save_baocaoton',views.save_baocaoton),
-    #Tri Nghe An ze zach
     path('<username>/baocaodoanhso', views.Bao_Cao_Doanh_So),
     path('<username>/post_bsds',views.search_bcds, name="post_bsds"),
     path('<username>/thamso', views.regular_update, name="index"),
@@ -42,7 +41,6 @@ urlpatterns = [
     path('<username>/nhap_hieuxe', views.them_hieuxe, name="nhap-hieu-xe"),
     path('<username>/nhap_tiencong', views.them_tiencong, name="them-hieu-xe"),
     path('<username>/delete_quydinh/<mts>', views.delete_quydinh),
-    # Trung Bui
     path('<username>/get_bd',views.get_bd),
     path('after_search', views.after_search, name = "after_search"),
 ]
