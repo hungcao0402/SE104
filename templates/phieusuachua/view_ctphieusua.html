@@ -39,7 +39,11 @@
 
 <br><br><br><br><br>
 <h1 style="text-align:center;">THÔNG TIN PHIẾU CHI TIẾT SỮA CHỮA</h1>
-
+<div style="margin-left: 40%; margin-top: 0%;">
+  {% for message in messages %}
+  <p {% if message.tags %} class="{{ message.tags }}" id="message_container" {% endif %}>{{ message }}</p>
+  {% endfor %}
+</div>
 
 
 <div>
@@ -52,7 +56,7 @@
     {%render_field ct_phieusua.solan%}
     <p></p>
     <label for="vehicle_no">Loại tiền công: </label>
-    {%render_field ct_phieusua.loaitiencong%}
+    {%render_field ct_phieusua.matiencong%}
     <p></p>
     <label for="vehicle_no">Tiền công: </label>
     {%render_field ct_phieusua.tiencong%}
@@ -68,8 +72,8 @@
     <p>-----------------------------------------------</p>
   </form>
 
+  <h3 style="text-align:center;">THÊM PHIẾU SỬ DỤNG VẬT TƯ PHỤ TÙNG</h3>
 
-          <h2 style="text-align:center;">CÁC PHIẾU SỬ DỤNG VẬT TƯ PHỤ TÙNG</h1>
   <form method="post" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
     
@@ -85,6 +89,7 @@
     {% comment %} {% render_field ct_phieusua.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
 
   </form>
+  <h4 style="text-align:center;">CÁC PHIẾU SỬ DỤNG VẬT TƯ PHỤ TÙNG</h1>
 
 
   <form style="margin-left:200px;margin-right:200px;">
@@ -120,8 +125,8 @@
     QUAY LẠI PHIẾU SỮA CHỮA
   </button>
 </a>
-{% for message in messages %}
-        <p {% if message.tags %} class="{{ message.tags }}" id="message_container" {% endif %}>{{ message }}</p>
-        {% endfor %}
+<div>
+
+</div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 {% endblock content %}

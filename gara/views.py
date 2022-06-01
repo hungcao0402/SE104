@@ -256,7 +256,7 @@ def view_ctphieusuachua(request,mact_phieusuachua, username):
             vattu_x=VatTuPhuTung.objects.get(tenvattuphutung=nhap_ctvtpt.cleaned_data['tenvattuphutung'])
             hieuso=nhap_ctvtpt.cleaned_data['soluong']-vattu_x.soluong   #Dùng để so sánh số lượng nhập với số lượng trong kho
             if hieuso>0:
-                messages.warning(request, 'Số lượng vật tư trong kho không đủ-Ngô Đức Vũ')
+                messages.warning(request, 'Số lượng vật tư trong kho không đủ')
             else:
                 #Tự động nhân đơn giá vật tư
                 print('soluong du')
@@ -507,7 +507,8 @@ def save_regular_update(request):
 # def delete_QuyDinh(self):
 #     QuyDinhHienHanh.objects.all().delete()
 
-
+# @user_passes_test(is_admin)
+# @login_required(login_url="/login")
 def update_quydinh(request , mts, username):
     quy_dinh = QuyDinhHienHanh.objects.get(MaThamSo=mts)
     form = CapNhatQuyDinh(instance= quy_dinh)

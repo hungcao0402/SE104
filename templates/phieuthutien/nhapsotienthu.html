@@ -39,9 +39,11 @@
 <br><br><br><br><br>
 <h1 style="text-align:center;">Điền phiếu thu tiền</h1>
 <div>
-    
-
-
+  <div style="margin-left:40%;margin-top:0%;">
+    {% for message in messages %}
+      <p {% if message.tags %} class="{{ message.tags }}" id="message_container" {% endif %}>{{ message }}</p>
+      {% endfor %}
+    </div> 
   <form method="post" style="margin-left:200px;margin-right:200px;">
     {% csrf_token %}
       <label for="vehicle_no">Tên chủ xe: </label>
@@ -61,6 +63,7 @@
   
       <input type="submit" value="Submit">
     </form>
+
     <form style="margin-left:200px;margin-right:200px;">
       <table style="margin: top 200px;" border="1" >  
   
@@ -78,12 +81,10 @@
            </tr> 
             {%endfor%}
       </table>
-    </form> 
+    </form>
+
   </div>
-  {% for message in messages %}
-        <p {% if message.tags %} class="{{ message.tags }}" id="message_container" {% endif %}>{{ message }}</p>
-        {% endfor %}
-  
+
   
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   {% endblock content %}

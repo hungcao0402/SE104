@@ -57,6 +57,7 @@
 
     <p>-----------------------------------------------</p>
    </form>
+   <h3 style="text-align:center;">THÊM PHIẾU CHI TIẾT SỮA CHỮA</h3>
   <form method="post" style="margin-left:200px;margin-right:200px;">
       {% csrf_token %}
       <label for="vehicle_no">Loại tiền công: </label>
@@ -70,7 +71,7 @@
     {% comment %} <label for="problem_description">Problem Description</label> {% endcomment %}
     {% comment %} {% render_field enquiry.problem_description class="form-control" placeholder="Problem Description" %} {% endcomment %}
     <input type="submit" value="Submit">
-    <p style="font-size: 20px;text-align: center;">DANH SÁCH SỬ DỤNG VẬT TƯ PHỤ TÙNG</p>
+    <p style="font-size: 20px;text-align: center;">DANH SÁCH CHI TIẾT SỮA CHỮA</p>
     <table style="margin: top 100px;">
         <tr>
             <th>Mã ID</th>

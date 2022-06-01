@@ -66,10 +66,10 @@ color: aquamarine;
                         <img src="{{picture}}" alt="Admin" class="rounded-circle" width="150">
                         <div class="mt-3">
                           <h4>{{customer.get_name}}</h4>
-                          <p class="text-secondary mb-1">Role:
-                            {%if customer.is_admin %} Admin {% else %} Staff {% endif %} 
+                          <p class="text-secondary mb-1">Quyền Hạn:
+                            {%if customer.is_admin %} Chủ Garage {% else %} Nhân viên {% endif %} 
                           </p>
-                          <p class="text-muted font-size-sm">Username: {{customer.username}}</p>
+                          <p class="text-muted font-size-sm">Tên Đăng Nhập: {{customer.username}}</p>
                           <a href="/edit-profile/{{customer.username}}">Chỉnh sửa thông tin</a>
                           <a href="../edit-account/{{customer.username}}">Đổi mật khẩu</a>
                         </div>

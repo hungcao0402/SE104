@@ -22,7 +22,7 @@ class Xe(models.Model):
     bienso=models.CharField(max_length=20,unique=True)
     makhachhang=models.ForeignKey(KhachHang,on_delete=models.CASCADE)
     mahieuxe=models.ForeignKey(HieuXe,on_delete=models.CASCADE)
-    tienno=models.FloatField(default=0)
+    tienno=models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.bienso
 
@@ -46,14 +46,14 @@ class PhieuThuTien(models.Model):
 class PhieuSuaChua(models.Model):
     maphieusuachua=models.AutoField(primary_key=True)
     maxe=models.ForeignKey(Xe,on_delete=models.CASCADE)
-    tongthanhtien=models.FloatField(default=0)
+    tongthanhtien=models.PositiveIntegerField(default=0)
     ngaylapphieu=models.DateField(auto_now_add=True)   
     def __str__(self):
         return f"{self.maphieusuachua}"
 class TienCong(models.Model):
     matiencong=models.AutoField(primary_key=True)
     loaitiencong=models.CharField(max_length=50, unique=True) 
-    tiencong=models.FloatField(default=0)
+    tiencong=models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.loaitiencong
 class CT_PhieuSuaChua(models.Model):
@@ -61,14 +61,14 @@ class CT_PhieuSuaChua(models.Model):
     maphieusuachua=models.ForeignKey(PhieuSuaChua,on_delete=models.CASCADE)
     solan=models.PositiveIntegerField()
     matiencong=models.ForeignKey(TienCong,on_delete=models.CASCADE)
-    tiencong=models.FloatField()
+    tiencong=models.PositiveIntegerField()
     tongtienvattu=models.PositiveIntegerField(default=0)
     noidung=models.CharField(max_length=100)
     tongtien=models.PositiveIntegerField(default=0)
 class VatTuPhuTung(models.Model):
     mavattuphutung=models.AutoField(primary_key=True)
     tenvattuphutung=models.CharField(max_length=50)
-    dongia=models.FloatField()
+    dongia=models.PositiveIntegerField()
     soluong=models.PositiveIntegerField()
     def __str__(self):
         return self.tenvattuphutung
@@ -78,8 +78,8 @@ class CT_VatTuPhuTung(models.Model):
     mavattuphutung=models.ForeignKey(VatTuPhuTung,on_delete=models.CASCADE)
     mact_phieusuachua=models.ForeignKey(CT_PhieuSuaChua,on_delete=models.CASCADE)
     soluong=models.PositiveIntegerField()
-    dongia=models.FloatField()
-    tongthanhtien=models.FloatField()
+    dongia=models.PositiveIntegerField()
+    tongthanhtien=models.PositiveIntegerField()
 class PhieuNhapVTPT(models.Model):
     maphieunhapvtpt=models.AutoField(primary_key=True)
     mavattuphutung=models.ForeignKey(VatTuPhuTung,on_delete=models.CASCADE,null=True)
@@ -104,7 +104,7 @@ class BaoCaoDoanhSo(models.Model):
     thoidiem=models.DateField(auto_now_add=True)
     month = models.PositiveIntegerField(default=0)
     year = models.PositiveIntegerField(default=0)
-    tongdoanhso=models.FloatField(default=0)
+    tongdoanhso=models.PositiveIntegerField(default=0)
 
 class CT_BaoCaoDoanhSO(models.Model):
     mact_baocaodoanhso=models.AutoField(primary_key=True)
@@ -113,7 +113,7 @@ class CT_BaoCaoDoanhSO(models.Model):
     STT = models.PositiveIntegerField(default=0)
     tenhieuxe = models.CharField(max_length=200,default="")
     luotsua = models.PositiveIntegerField(default=0)
-    thanhtien = models.FloatField(default=0)
+    thanhtien = models.PositiveIntegerField(default=0)
     ti_le = models.FloatField(default=0)
     
 class BaoCaoTon(models.Model):
@@ -137,7 +137,7 @@ class QuyDinhHienHanh(models.Model):
     # MaThamSo = models.ForeignKey(ThamSo, on_delete= models.CASCADE)
     MaThamSo = models.AutoField(primary_key=True)
     TenThamSo = models.TextField(default='')
-    GiaTri = models.FloatField(default=0)
+    GiaTri = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.TenThamSo
