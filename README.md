@@ -1,4 +1,4 @@
-# --------------------------------------ĐỒ ÁN NHẬP MÔN CÔNG NGHỆ PHẦN MỀM------------------------------------------
+# ĐỒ ÁN NHẬP MÔN CÔNG NGHỆ PHẦN MỀM
 
 Trường: Đại học Công nghệ thông tin - Đại học Quốc gia Thành phố Hồ Chí Minh.
 
@@ -8,7 +8,6 @@ Giảng viên phụ trách: cô Đỗ Thị Thanh Tuyền.
 
 Đề tài: Quản lý Garage Ô tô.
 
-# -----------------------------------------------------------------------------------------------------------------
 
 # 1. Giới thiệu ứng dụng
 - Tên ứng dụng: Hệ thống quản lý gara ô tô
