@@ -60,7 +60,7 @@ class StaffUpdateAccount(UserChangeForm):
         }
 # Phan cua Ngo Duc Vu -20520950
 class NhapBienSoThu(forms.Form):
-    bienso=forms.ModelChoiceField(queryset=Xe.objects.all())
+    bienso=forms.ModelChoiceField(queryset=Xe.objects.filter(tienno__gt=0))
 class NhapSoTienThu(forms.Form):
     sotienthu=forms.IntegerField()
 class NhapBienSoSua(forms.Form):
