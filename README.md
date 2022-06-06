@@ -14,7 +14,7 @@
 * **Giảng viên:** Đỗ Thị Thanh Tuyền
 * **Đề tài:** Quản lý Garage Ô tô.
 
-# Hướng dẫn cài đặt và chạy trên môi trường phát triển
+# HƯỚNG DẪN CÀI ĐẶT
 ```
 git clone https://github.com/hungcao0402/SE104
 cd SE104
