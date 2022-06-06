@@ -1,10 +1,10 @@
 # ĐỒ ÁN NHẬP MÔN CÔNG NGHỆ PHẦN MỀM
 
-Trường: Đại học Công nghệ thông tin - Đại học Quốc gia Thành phố Hồ Chí Minh.
+Trường Đại học Công nghệ thông tin - Đại học Quốc gia Thành phố Hồ Chí Minh.
 
 Lớp: Nhập môn Công nghệ Phần mềm - SE104.M23.
 
-Giảng viên phụ trách: cô Đỗ Thị Thanh Tuyền.
+Giảng viên phụ trách: Đỗ Thị Thanh Tuyền.
 
 Đề tài: Quản lý Garage Ô tô.
 
