@@ -6,6 +6,14 @@
 </p>
 
 <h1 align="center"><b>ĐỒ ÁN NHẬP MÔN CÔNG NGHỆ PHẦN MỀM</b></h1>
+	
+| STT    | MSSV          | Họ và Tên              | Email                   |
+| ------ |:-------------:| ----------------------:|------------------------:|
+| 1      | 20520926      | Châu Tấn               |20520926@gm.uit.edu.vn   |
+| 2      | 20522052      | Nguyễn Minh Trí        |20522052@gm.uit.edu.vn   |
+| 3      | 20520332      | Bùi Nguyễn Anh Trung   |20520332@gm.uit.edu.vn   |
+| 4      | 20520193      | Cao Văn Hùng           |20520193@gm.uit.edu.vn   |
+| 5      | 20520950      | Ngô Đức Vũ             |20520950@gm.uit.edu.vn   |
 
 # GIỚI THIỆU MÔN HỌC
 
