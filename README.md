@@ -26,7 +26,7 @@
 ```
 git clone https://github.com/hungcao0402/SE104
 cd SE104
-pip install -r requirements.txt'
+pip install -r requirements.txt
 python manage.py runserver
 ```
 
