@@ -6,7 +6,9 @@
 </p>
 
 <h1 align="center"><b>ĐỒ ÁN NHẬP MÔN CÔNG NGHỆ PHẦN MỀM</b></h1>
-	
+
+# THÀNH VIÊN NHÓM
+
 | STT    | MSSV          | Họ và Tên              | Email                   |
 | ------ |:-------------:| ----------------------:|------------------------:|
 | 1      | 20520926      | Châu Tấn               |20520926@gm.uit.edu.vn   |
